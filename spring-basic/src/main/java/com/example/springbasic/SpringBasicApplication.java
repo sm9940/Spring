@@ -10,16 +10,17 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class SpringBasicApplication {
 
 	public static void main(String[] args) {
-//		SpringApplication.run(SpringBasicApplication.class, args);
-	//ApplicationContext : Spring Container에 저장된 bean객체 확인 가능
-	ApplicationContext context = SpringApplication.run(SpringBasicApplication.class, args);
+		SpringApplication.run(SpringBasicApplication.class, args);
+		//ApplicationContext : Spring Container에 저장된 bean객체 확인 가능
+//	ApplicationContext context = SpringApplication.run(SpringBasicApplication.class, args);
 
 //		ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-				String[] beanDefinitionNames = context.getBeanDefinitionNames(); //bean 이름을 가져온다.
-	for(String beanDefinitionName : beanDefinitionNames){
-		Object bean = context.getBean(beanDefinitionName); //bean 객체를 가져온다
-		System.out.println("name: "+ beanDefinitionName+", object: "+ bean);
-	}
-	}
+//				String[] beanDefinitionNames = context.getBeanDefinitionNames(); //bean 이름을 가져온다.
+//	for(String beanDefinitionName : beanDefinitionNames){
+//		Object bean = context.getBean(beanDefinitionName); //bean 객체를 가져온다
+//		System.out.println("name: "+ beanDefinitionName+", object: "+ bean);
+//	}
+//	}
 
+	}
 }
