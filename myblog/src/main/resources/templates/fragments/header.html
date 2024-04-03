@@ -26,14 +26,14 @@
                             <li class="nav-item"><a href="/" class="nav-link">Blog Post</a></li>
                             <li class="nav-item"><a href="/" class="nav-link">About</a></li>
                             <li class="nav-item"><a href="/" class="nav-link">Contact</a></li>
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown" th:if="${session.name != null}">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown"
                                    aria-haspopup="true" aria-expanded="false">
                                     Write
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
                                     <a class="dropdown-item" href="/write">포스트작성</a>
-                                    <a class="dropdown-item" href="/post">포스트목록</a>
+                                    <a class="dropdown-item" href="/list">포스트목록</a>
                                 </div>
                             </li>
 
@@ -41,7 +41,11 @@
 
                         <ul class="list-inline mb-0 d-block d-lg-none">
                             <li class="list-inline-item">
-                                <a href="/login" class="btn btn-dark" style="color:white;">LOGIN</a>
+                                <a th:if="${session.name == null}" href="/login" class="btn btn-dark" style="color:white;">LOGIN</a>
+                                <span th:unless="${session.name== null}">
+                                    <a href="/" th:text="${session.name +'님'}"></a>
+                                    <a href="/logout" class="btn btn-dark" style="color:white;">LOGOUT</a>
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -51,7 +55,11 @@
             <div class="col-lg-2 col-md-4 col-6">
                 <div class="header-socials-2 text-right d-none d-lg-block">
                     <ul class="list-inline mb-0">
-                        <a href="/login" class="btn btn-dark" style="color:white;">LOGIN</a>
+                        <a th:if="${session.name == null}" href="/login" class="btn btn-dark" style="color:white;">LOGIN</a>
+                        <span th:unless="${session.name== null}">
+                                    <a href="/" th:text="${session.name +'님'}"></a>
+                                    <a href="/logout" class="btn btn-dark" style="color:white;">LOGOUT</a>
+                                </span>
                     </ul>
                 </div>
             </div>

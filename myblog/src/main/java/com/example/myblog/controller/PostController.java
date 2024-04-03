@@ -11,4 +11,21 @@ public class PostController {
     public String index(Model model){
             return "index";
     }
+
+    @GetMapping(value = "/view")
+    public String view(){
+        return "post/view";
+    }
+    @GetMapping(value = "/list")
+    public String list(){
+        return "post/list";
+    }
+    @GetMapping(value = "/write")
+    public String write(){
+        return "post/write";
+    }
+    @GetMapping(value = "/rewrite")
+    public String rewrite(){
+        return "post/rewrite";
+    }
 }
