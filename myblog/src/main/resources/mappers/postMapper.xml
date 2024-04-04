@@ -22,8 +22,22 @@
         <result column="update_date" property="updateDate"/>
         <result column="views" property="views"/>
         <result column="category_code" property="categoryCode"/>
+        <collection property="category" resultMap="Category"/>
     </resultMap>
-    <select id="getPostList" resultType="Post" parameterMap="map" resultMap="Post">
+    <select id="getPostList" resultType="Post" parameterType="map" resultMap="Post">
+        SELECT * FROM (
+        SELECT rownum rnum, DATA.* from (SELECT p.POST_ID ,p.SUBJECT ,p.CONTENT ,p.MEMBER_ID ,
+        to_char(p.WRITE_DATE,'yyyy-mm-dd') write_date,
+        to_char(p.UPDATE_DATE,'yyyy-mm-dd') update_date,
+        p.VIEWS ,c.CATEGORY_CODE ,c.CATEGORY_NAME
+        FROM post p ,CATEGORY c
+        WHERE p.CATEGORY_CODE =c.CATEGORY_CODE
+        AND p.MEMBER_ID =#{memberId}
+        AND  ${searchKey} LIKE '%' ||#{searchValue} ||'%'
+        ORDER BY p.POST_ID DESC) DATA)
+        <![CDATA[
+    WHERE rnum >=#{start} AND rnum <= #{end}
+]]>
 
     </select>
 </mapper>

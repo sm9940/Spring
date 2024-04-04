@@ -14,4 +14,6 @@ public class Post {
     private String updateDate;
     private int views;
     private String categoryCode;
+
+    private Category category;
 }
