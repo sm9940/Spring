@@ -40,4 +40,10 @@
 ]]>
 
     </select>
+    <select id="getDataCount" parameterType="map" resultType="int">
+        SELECT nvl(count(*),0)  FROM post
+        WHERE member_id = #{memberId}
+        AND SUBJECT LIKE '%%'
+        AND  ${searchKey} LIKE '%' ||#{searchValue} ||'%'
+    </select>
 </mapper>

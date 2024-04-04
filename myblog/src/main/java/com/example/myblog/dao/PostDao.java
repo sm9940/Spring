@@ -9,5 +9,5 @@ import java.util.Map;
 @Mapper
 public interface PostDao {
     public List<Post> getPostList(Map map) throws Exception;
-
+    public  int getDataCount(Map map) throws Exception;
 }

@@ -16,4 +16,9 @@ public class PostServiceImpl implements PostService{
     public List<Post> getPostList(Map map) throws Exception {
         return postDao.getPostList(map);
     }
+
+    @Override
+    public int getDataCount(Map map) throws Exception {
+        return postDao.getDataCount(map);
+    }
 }
