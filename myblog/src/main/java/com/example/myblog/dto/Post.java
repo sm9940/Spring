@@ -16,4 +16,5 @@ public class Post {
     private String categoryCode;
 
     private Category category;
+    private Member member;
 }

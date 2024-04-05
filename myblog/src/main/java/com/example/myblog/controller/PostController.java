@@ -6,12 +6,14 @@ import com.example.myblog.util.PagingUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +33,37 @@ public class PostController {
     }
 
     @GetMapping(value = "/view")
-    public String view(){
+    public String view(HttpServletRequest request,Model model){
+
+
+         {
+            try {
+                int postId = Integer.parseInt(request.getParameter("postId"));
+                String pageNum = request.getParameter("pageNum");
+                String searchKey = request.getParameter("searchKey");
+                String searchValue =request.getParameter("searchValue");
+                if(searchValue  != null)  searchValue= URLDecoder.decode(searchValue, "UTF-8");
+                //1. 조회수 늘리기
+                postService.updateHitCount(postId);
+
+                //2. 게시물 데이터 가져오기
+                Post post = postService.getReadPost(postId);
+
+                if(post == null) return "redirect:/list?pageNum=" + pageNum;
+
+                String param = "pageNum=" +pageNum;
+
+                if(searchValue != null && !searchValue.equals("")){
+                    param += "&searchKey=" + searchKey  ;
+                param+= "&searchValue= "+URLEncoder.encode(searchValue,"UTF-8") ;
+                }
+                model.addAttribute("post",post);
+                model.addAttribute("params",param);
+                model.addAttribute("pageNum",pageNum);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
         return "post/view";
     }
     @RequestMapping(value = "/list",method = {
@@ -53,6 +85,8 @@ public class PostController {
                 //검색어가 없다면
                 searchKey = "subject"; //검색 키워드의 디폴트는 subject
                 searchValue = ""; //검색어의 디폴트는 빈문자열
+            } else{
+                searchValue = URLDecoder.decode(searchValue,"UTF-8");
             }
 
 
@@ -105,14 +139,104 @@ public class PostController {
         }
         return "post/list";
     }
+    @PostMapping(value = "/insert")
+    public String insertPost(Post post,HttpSession session){
+        //1. 세션에서 사용자 member_id 가져오기
+        Object memberId = (int) session.getAttribute("member_id");
 
+            try { if(memberId==null){
+                return "redirect:/login";
+        } else {
+                post.setMemberId((int)memberId); //insert 하기전 memberId 값 넣어줌
+                postService.insertPost(post); //2. 포스트에 insert 해주는 서비스 호출
+        }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            return "redirect:/list";
+    }
 
     @GetMapping(value = "/write")
     public String write(){
         return "post/write";
     }
     @GetMapping(value = "/rewrite")
-    public String rewrite(){
+    public String rewrite(HttpServletRequest request,Model model){
+
+        try {
+            int postId = Integer.parseInt(request.getParameter("postId"));
+            String pageNum = request.getParameter("pageNum");
+            String searchKey = request.getParameter("searchKey");
+            String searchValue = request.getParameter("searchValue");
+            
+            //게시물 데이터 가져오기
+            Post post =postService.getReadPost(postId);
+
+            if(post == null) return "redirect:/list?pageNum=" + pageNum;
+
+            String param = "pageNum="+pageNum;
+
+            if(searchValue != null && !searchValue.equals("")) {
+                searchValue = URLDecoder.decode(searchValue, "UTF-8");
+                //검색어가 있다면
+                param += "&searchKey=" + searchKey;
+                param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); //컴퓨터의 언어로 인코딩
+            }
+
+            model.addAttribute("post",post);
+            model.addAttribute("params",param);
+            model.addAttribute("pageNum",pageNum);
+            model.addAttribute("searchKey",searchKey);
+            model.addAttribute("searchValue",searchValue);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "post/rewrite";
     }
+    @PostMapping(value = "/update")
+    public String update(Post post,HttpSession session,HttpServletRequest request){
+        Object memberId = session.getAttribute("member_id");
+        String pageNum = request.getParameter("pageNum");
+        String searchKey = request.getParameter("searchKey");
+        String searchValue = request.getParameter("searchValue");
+        String param = "postId="+post.getPostId()+"&pageNum="+pageNum;
+        try {
+
+            if(memberId==null){
+                return  "redirect:/login";
+            } else {
+                postService.updatePost(post); //포스트 update 서비스 호출
+            }
+            if(searchValue != null && !searchValue.equals("")) {
+                searchValue = URLDecoder.decode(searchValue, "UTF-8");
+                //검색어가 있다면
+                param += "&searchKey=" + searchKey;
+                param += "&searchValue=" + URLEncoder.encode(searchValue, "UTF-8"); //컴퓨터의 언어로 인코딩
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return "redirect:/view?"+param;
+    }
+    @DeleteMapping(value = "/delete/{postId}")
+    public @ResponseBody ResponseEntity deletePost(@PathVariable("postId") int postId,HttpSession session) {
+        try {
+
+            Object memberId = session.getAttribute("member_id");
+
+            if(memberId == null) {
+                return new ResponseEntity<String>("삭제 실패. 관리자에게 문의하세요.", HttpStatus.UNAUTHORIZED);
+            } else {
+                postService.deletePost(postId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("삭제 실패. 관리자에게 문의하세요.", HttpStatus.BAD_REQUEST);
+        }
+        //ResponseEntity<첫번째 매개변수의 타입>(result결과, response상태코드)
+        //HttpsStatus.OK 일때는 ajax의 success함수로 결과가 출력된다.
+        return new ResponseEntity<Integer>(postId, HttpStatus.OK );
+    }
 }
+

@@ -23,6 +23,7 @@
         <result column="views" property="views"/>
         <result column="category_code" property="categoryCode"/>
         <collection property="category" resultMap="Category"/>
+        <collection property="member" resultMap="Member"/>
     </resultMap>
     <select id="getPostList" resultType="Post" parameterType="map" resultMap="Post">
         SELECT * FROM (
@@ -46,4 +47,23 @@
         AND SUBJECT LIKE '%%'
         AND  ${searchKey} LIKE '%' ||#{searchValue} ||'%'
     </select>
+    <select id="getReadPost" parameterType="int" resultType="Post" resultMap="Post">
+        SELECT p.POST_ID  ,p.SUBJECT , p.CONTENT ,p.WRITE_DATE,
+        p.UPDATE_DATE ,p.VIEWS ,p.CATEGORY_CODE ,
+        m.MEMBER_ID ,m.NAME ,m.EMAIL  FROM post p,"MEMBER" m WHERE 
+        p.MEMBER_ID =m.MEMBER_ID AND p.POST_ID = #{postId}
+    </select>
+    <update id="updateHitCount" parameterType="int">
+        update post set views = views + 1 where post_id = #{postId}
+    </update>
+    <insert id="insertPost" parameterType="Post"  >
+        insert into post values(post_seq.nextval, #{subject}, #{content}, #{memberId}, sysdate, sysdate, 0, #{categoryCode})
+    </insert>
+    <update id="updatePost" parameterType="Post">
+        UPDATE POST SET SUBJECT = #{subject}, CONTENT =#{content}, UPDATE_DATE = SYSDATE , CATEGORY_CODE =#{categoryCode}
+        WHERE POST_ID = #{postId}
+    </update>
+    <delete id="deletePost" parameterType="int">
+        delete from post where post_id =#{postId}
+    </delete>
 </mapper>

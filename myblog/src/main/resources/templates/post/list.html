@@ -23,7 +23,7 @@
                     <tr th:if="${#lists.size(lists)}>0" th:each="post:${lists}">
                         <th scope="row" th:text="${post.postId}"></th>
                         <td th:text="${post.category.categoryName}"></td>
-                        <td th:text="${post.subject}"></td>
+                        <td  ><a th:href="|@{${articleUrl}}&postId=@{${post.postId}}|"  th:text="${post.subject}"></a></td>
                         <td th:text="${post.writeDate}"></td>
                         <td th:text="${post.views}"></td>
                     </tr>
