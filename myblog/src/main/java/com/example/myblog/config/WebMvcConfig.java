@@ -27,7 +27,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations(uploadPath);
     }
 
-    @Begitan
+    @Bean
     MappingJackson2JsonView jsonView(){ //데이터를 json 객체로 리턴해준다.
         return new MappingJackson2JsonView();
     }
