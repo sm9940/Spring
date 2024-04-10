@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.hotel.dao.CustomerDao">
+    <resultMap id="Customer" type="Customer">
+        <result column="customer_id" property="customerId"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="address" property="address"/>
+        <result column="balance" property="balance"/>
+    </resultMap>
+    <select id="loginCustomer" resultType="Customer" resultMap="Customer">
+        select * from customer where customer_id = #{customerId} and password = #{password}
+    </select>
+</mapper>

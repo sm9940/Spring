@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class room {
+public class Room {
     private int roomId;
     private  String roomName;
     private  int price;

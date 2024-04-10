@@ -275,21 +275,20 @@
             </div>
         </div>
     </div>
-    <form id="test-form1" class="white-popup-block mfp-hide">
+    <form action="/login" method="post" id="test-form1" class="white-popup-block mfp-hide">
         <div class="popup_box">
             <div class="popup_inner">
                 <h3>LOGIN</h3>
                 <form action="/login" method="post" id="contact-form" class="contact-form">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-xl-12">
                             <div class="form-group">
-                                <label for="email"></label>
-                                <input class="form-control form-control-email" name="email" id="email"
-                                       type="text" placeholder="이메일" maxlength="200" required >
+                                <label for="customerId"></label>
+                                <input class="form-control " name="customerId" id="customerId"
+                                       type="text" placeholder="아이디" maxlength="200" required >
                             </div>
                             <div class="form-group">
                                 <label for="password"></label>
-
                                 <input class="form-control form-control-password" name="password" id="password"
                                        type="password" placeholder="비밀번호" maxlength="200" required>
                             </div>
@@ -308,7 +307,7 @@
         <div class="popup_box">
             <div class="popup_inner">
                 <h3>Check Availability</h3>
-                <form action="#">
+                <form action="/">
                     <div class="row">
                         <div class="col-xl-6">
                             <input id="datepicker" placeholder="Check in date" />

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class reservation {
+public class Reservation {
     private int payId;
     private String customerId;
     private String checkin;

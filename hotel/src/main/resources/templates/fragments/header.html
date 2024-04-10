@@ -57,10 +57,14 @@
                                 </ul>
                             </div>
                             <div class="book_btn d-none d-lg-block">
-                                <a class="popup-with-form" href="#test-form1">LOGIN</a>
+                                <a th:if="${session.name == null}" class="popup-with-form" href="#test-form1">LOGIN</a>
+                                <span th:unless="${session.name== null}">
+                                    <a href="/" th:text="${session.name +'님'}"></a>
+                                    <a href="/logout"  >LOGOUT</a>
+                                </span>
                             </div>
                             <div class="book_btn d-none d-lg-block">
-                                <a class="popup-with-form" href="#test-form">Book A Room</a>
+                                <a class="popup-with-form" href="#test-form" th:if="${session.name != null}">Book A Room</a>
                             </div>
                         </div>
                     </div>
