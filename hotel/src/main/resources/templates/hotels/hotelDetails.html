@@ -13,8 +13,8 @@
 
 <main layout:fragment="content" class="main">
     <!-- bradcam_area_start -->
-    <div class="bradcam_area breadcam_bg_1" th:each="hotel : ${hotels}">
-        <h3 th:if="${hotel.hotelId}" th:text="${hotel.hotelName}"></h3>
+    <div class="bradcam_area breadcam_bg_1">
+        <h3 th:text="${hotel.hotelName}"></h3>
     </div>
     <!-- bradcam_area_end -->
 

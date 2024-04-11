@@ -25,4 +25,11 @@
         SELECT * FROM ROOM r ,HOTEL h WHERE r.hotel_id = h.HOTEL_ID ORDER BY r.ROOM_ID
     </select>
 
+    <select id="getHotelById" parameterType="int" resultMap="Hotel">
+        SELECT * FROM hotel WHERE hotel_id = #{hotelId}
+    </select>
+
+    <select id="getRoomsByHotelId" parameterType="int" resultMap="Room">
+        SELECT * FROM room WHERE hotel_id = #{hotelId} order by room_id
+    </select>
 </mapper>

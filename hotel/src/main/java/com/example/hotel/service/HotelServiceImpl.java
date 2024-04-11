@@ -24,5 +24,13 @@ public class HotelServiceImpl implements HotelService{
         return hotelDao.getAllHotelswithRooms();
     }
 
+    @Override
+    public Hotel getHotelById(int hotelId) {
+        return hotelDao.getHotelById(hotelId);
+    }
 
+    @Override
+    public List<Room> getRoomsByHotelId(int hotelId) {
+        return hotelDao.getRoomsByHotelId(hotelId);
+    }
 }
