@@ -1,4 +1,7 @@
 package com.example.hotel.dao;
 
-public class ReservationDao {
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface ReservationDao {
 }

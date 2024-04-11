@@ -13,4 +13,9 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer loginCustomer(Customer customer) throws Exception {
         return customerDao.loginCustomer(customer);
     }
+
+    @Override
+    public void updateBalance(Customer customer) throws Exception {
+        customerDao.updateBalance(customer);
+    }
 }

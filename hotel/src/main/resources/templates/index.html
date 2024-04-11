@@ -303,34 +303,20 @@
             </div>
         </div>
     </form>
-    <form id="test-form" class="white-popup-block mfp-hide">
+    <form action="/update" method="post" id="test-form" class="white-popup-block mfp-hide">
         <div class="popup_box">
             <div class="popup_inner">
-                <h3>Check Availability</h3>
-                <form action="/">
+                <h3>Recharge Balance</h3>
                     <div class="row">
-                        <div class="col-xl-6">
-                            <input id="datepicker" placeholder="Check in date" />
-                        </div>
-                        <div class="col-xl-6">
-                            <input id="datepicker2" placeholder="Check out date" />
-                        </div>
-                        </div>
-                        <div class="col-xl-12">
-                            <select class="form-select wide" id="default-select 3">
-                                <option data-display="Room type">Room type</option>
-                                <option value="1">Laxaries Rooms</option>
-                                <option value="2">Deluxe Room</option>
-                                <option value="3">Signature Room</option>
-                                <option value="4">Couple Room</option>
-                            </select>
-                        </div>
+                        <input type="hidden" name="customerId" value="${session.customer_id}">
+                    <input class="form-control" name="balance" id="balance" type="text" placeholder="금액" maxlength="200" required >
+
                         <div class="col-xl-12">
                             <button type="submit" class="boxed-btn3">
-                                Check Availability
+                                Recharge
                             </button>
                         </div>
-                </form>
+                        </div>
             </div>
         </div>
     </form>

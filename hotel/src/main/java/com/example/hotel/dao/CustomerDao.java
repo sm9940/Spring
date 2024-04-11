@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CustomerDao {
     public Customer loginCustomer(Customer customer) throws Exception;
+    public void updateBalance(Customer customer) throws Exception;
 }

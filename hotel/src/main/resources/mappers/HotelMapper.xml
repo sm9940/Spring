@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.hotel.dao.HotelDao">
+    <resultMap id="Hotel" type="Hotel">
+        <result column="hotel_id" property="hotelId"/>
+        <result column="hotel_name" property="hotelName"/>
+        <result column="hotel_address" property="hotelAddress"/>
+        <result column="hotel_tel" property="hotelTel"/>
+    </resultMap>
+    <select id="getAllHotels" resultMap="Hotel" resultType="Hotel">
+        select * from hotel
+    </select>
+</mapper>

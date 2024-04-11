@@ -10,10 +10,11 @@
                             <nav>
                                 <ul id="navigation">
                                     <li><a class="active" href="index.html">home</a></li>
-                                    <li><a href="rooms.html">Hotel</a>
+                                    <li><a href="hotels/rooms">Hotel</a>
                                         <ul class="submenu">
-                                            <li><a href="blog.html">신라호텔</a></li>
-                                            <li><a href="single-blog.html">하얏트호텔</a></li>
+                                            <li th:each="hotel : ${hotels}">
+                                                <a th:href="@{'/hotelDetails?hotelName=' + ${hotel.hotelName}}" th:text="${hotel.hotelName}"></a>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li><a href="about.html">About</a></li>
@@ -42,34 +43,16 @@
                     </div>
                     <div class="col-xl-5 col-lg-4 d-none d-lg-block">
                         <div class="book_room">
-                            <div class="socail_links">
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-facebook-square"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-twitter"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-instagram"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
                             <div class="book_btn d-none d-lg-block">
                                 <a th:if="${session.name == null}" class="popup-with-form" href="#test-form1">LOGIN</a>
                                 <span th:unless="${session.name== null}">
                                     <a href="/" th:text="${session.name +'님'}"></a>
+                                <a class="popup-with-form" href="#test-form" th:if="${session.name != null}" th:text="${'잔액: '+session.balance}"></a>
+
                                     <a href="/logout"  >LOGOUT</a>
                                 </span>
                             </div>
                             <div class="book_btn d-none d-lg-block">
-                                <a class="popup-with-form" href="#test-form" th:if="${session.name != null}">Book A Room</a>
                             </div>
                         </div>
                     </div>

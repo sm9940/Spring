@@ -16,4 +16,7 @@
     <select id="loginCustomer" resultType="Customer" resultMap="Customer">
         select * from customer where customer_id = #{customerId} and password = #{password}
     </select>
+    <update id="updateBalance" parameterType="Customer" >
+        update customer set balance = balance+#{balance} where customer_id = #{customerId}
+    </update>
 </mapper>
