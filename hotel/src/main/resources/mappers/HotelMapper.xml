@@ -10,7 +10,19 @@
         <result column="hotel_address" property="hotelAddress"/>
         <result column="hotel_tel" property="hotelTel"/>
     </resultMap>
+    <resultMap id="Room" type="Room">
+        <result column="room_id" property="roomId"/>
+        <result column="room_name" property="roomName"/>
+        <result column="price" property="price"/>
+        <result column="room_img" property="roomImg"/>
+        <collection property="hotel" resultMap="Hotel"/>
+    </resultMap>
+
     <select id="getAllHotels" resultMap="Hotel" resultType="Hotel">
         select * from hotel
     </select>
+    <select id="getAllHotelswithRooms" resultMap="Room" resultType="Room">
+        SELECT * FROM ROOM r ,HOTEL h WHERE r.hotel_id = h.HOTEL_ID ORDER BY r.ROOM_ID
+    </select>
+
 </mapper>

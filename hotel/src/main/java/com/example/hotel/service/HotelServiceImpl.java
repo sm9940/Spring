@@ -2,6 +2,7 @@ package com.example.hotel.service;
 
 import com.example.hotel.dao.HotelDao;
 import com.example.hotel.dto.Hotel;
+import com.example.hotel.dto.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +18,11 @@ public class HotelServiceImpl implements HotelService{
     public List<Hotel> getAllHotels() {
         return hotelDao.getAllHotels();
     }
+
+    @Override
+    public List<Room> getAllHotelswithRooms() {
+        return hotelDao.getAllHotelswithRooms();
+    }
+
+
 }
