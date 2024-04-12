@@ -12,4 +12,7 @@ public class Reservation {
     private String checkout;
     private int payment;
     private int roomId;
+    private Hotel hotel;
+    private Room room;
+    private Customer customer;
 }
