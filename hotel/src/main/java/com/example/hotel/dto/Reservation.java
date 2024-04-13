@@ -15,4 +15,6 @@ public class Reservation {
     private Hotel hotel;
     private Room room;
     private Customer customer;
+
+
 }

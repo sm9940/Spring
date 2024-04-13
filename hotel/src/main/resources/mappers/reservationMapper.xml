@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.hotel.dao.ReservationDao">
+    <resultMap id="reservationResultMap" type="com.example.hotel.dto.Reservation">
+        <result property="payId" column="pay_id" />
+        <result property="customerId" column="customer_id" />
+        <result property="checkin" column="checkin" />
+        <result property="checkout" column="checkout" />
+        <result property="payment" column="payment" />
+        <result property="roomId" column="room_id" />
+        <collection property="hotel" resultMap="hotel"/>
+        <collection property="Room" resultMap="Room"/>
+        <collection property="customer" resultMap="customer"/>
+    </resultMap>
+    <insert id="addReservation" parameterType="com.example.hotel.dto.Reservation">
+        INSERT INTO reservation VALUES (reservation_seq.nextval, #{customerId}, #{checkin}, #{checkout}, #{payment}, #{roomId})
+    </insert>
+    <update id="calculatePayment" parameterType="com.example.hotel.dto.Reservation">
+        <![CDATA[
+    UPDATE reservation
+    SET payment = (SELECT price * (DATEDIFF(checkout, checkin)) FROM room WHERE room_id = #{roomId})
+    WHERE pay_id = #{payId}
+    ]]>
+    </update>
+    <update id="processPayment" parameterType="com.example.hotel.dto.Reservation">
+        UPDATE reservations
+        SET payment = #{payment}
+        WHERE pay_id = #{payId}
+    </update>
+</mapper>

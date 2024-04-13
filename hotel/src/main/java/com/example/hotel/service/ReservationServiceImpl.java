@@ -1,19 +1,28 @@
 package com.example.hotel.service;
 
+
 import com.example.hotel.dao.ReservationDao;
 import com.example.hotel.dto.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
 @Service
 public class ReservationServiceImpl implements ReservationService{
+
     @Autowired
-    ReservationDao reservationDao;
+    private ReservationDao reservationDao;
+
     @Override
     public void addReservation(Reservation reservation) {
-            reservationDao.addReservation(reservation);
+        reservationDao.addReservation(reservation);
+    }
+
+    @Override
+    public void processPayment(Reservation reservation) {
+        reservationDao.processPayment(reservation);
     }
 
     @Override
@@ -28,11 +37,16 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     public void updateReservation(Reservation reservation) {
-            reservationDao.updateReservation(reservation);
+        reservationDao.updateReservation(reservation);
     }
 
     @Override
     public void deleteReservation(int payId) {
-            reservationDao.deleteReservation(payId);
+        reservationDao.deleteReservation(payId);
+    }
+
+    @Override
+    public String showReservationPage(Model model, int hotelId) {
+        return reservationDao.showReservationPage(model,hotelId);
     }
 }

@@ -5,6 +5,7 @@ import com.example.hotel.dto.Hotel;
 import com.example.hotel.dto.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -33,4 +34,6 @@ public class HotelServiceImpl implements HotelService{
     public List<Room> getRoomsByHotelId(int hotelId) {
         return hotelDao.getRoomsByHotelId(hotelId);
     }
+
+
 }

@@ -27,7 +27,7 @@ public class HotelController {
     }
 
     @GetMapping("/hotelDetails")
-    public String hotelDetails(@RequestParam("hotelId") int hotelId,Model model) {
+    public String hotelDetails(@RequestParam("hotelId") int hotelId, Model model) {
 
 
         // 호텔 정보 가져오기
@@ -39,8 +39,9 @@ public class HotelController {
         model.addAttribute("rooms", rooms);
 
 
-
         return "hotels/hotelDetails";
     }
-}
 
+
+
+}
