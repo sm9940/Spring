@@ -8,7 +8,6 @@
 </head>
 
 <body>
-
 <header th:fragment="header">
     <div class="header-area">
         <div id="sticky-header" class="main-header-area">
@@ -26,7 +25,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="reservation.html">About</a></li>
                                     <li><a href="#">blog <i class="ti-angle-down"></i></a>
                                         <ul class="submenu">
                                             <li><a href="blog.html">blog</a></li>
@@ -55,10 +54,11 @@
                             <div class="book_btn d-none d-lg-block">
                                 <a th:if="${session.name == null}" class="popup-with-form" href="#test-form1">LOGIN</a>
                                 <span th:unless="${session.name== null}">
-                                        <a href="/" th:text="${session.name +'님'}"></a>
-                                        <a class="popup-with-form" href="#test-form" th:if="${session.name != null}" th:text="${'잔액: '+session.balance}"></a>
-                                        <a href="/logout">LOGOUT</a>
-                                    </span>
+                                    <a href="/" th:text="${session.name +'님'}"></a>
+                                    <a href="/reservation">RESERVATION</a>
+                                    <a class="popup-with-form" href="#test-form2" th:if="${session.name != null}" th:text="${'잔액: '+session.balance}"></a>
+                                    <a href="/logout">LOGOUT</a>
+                                </span>
                             </div>
                         </div>
                     </div>

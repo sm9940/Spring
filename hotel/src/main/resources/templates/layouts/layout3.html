@@ -1,4 +1,4 @@
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
@@ -6,10 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
-    <link rel="shortcut icon" type="image/x-icon" th:href="@{img/favicon.png}">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/favicon.png}">
     <!-- Place favicon.ico in the root directory -->
-
-    <!-- CSS here -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
     <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
@@ -21,6 +19,12 @@
     <link rel="stylesheet" th:href="@{/css/animate.css}">
     <link rel="stylesheet" th:href="@{/css/slicknav.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            background-color: black;
+            padding-top: 100px; /* 추가된 윗 공간 */
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments/header::header}"></div>
@@ -28,7 +32,8 @@
 <div layout:fragment="content" class="content"></div>
 
 <div th:replace="~{fragments/footer::footer}"></div>
-</body>
+
+<!-- JS here -->
 <script th:src="@{/js/vendor/modernizr-3.5.0.min.js}"></script>
 <script th:src="@{/js/vendor/jquery-1.12.4.min.js}"></script>
 <script th:src="@{/js/popper.min.js}"></script>
@@ -56,5 +61,5 @@
 <script th:src="@{/js/mail-script.js}"></script>
 
 <script th:src="@{/js/main.js}"></script>
-
+</body>
 </html>
