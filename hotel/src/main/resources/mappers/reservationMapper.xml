@@ -9,25 +9,15 @@
         <result property="customerId" column="customer_id" />
         <result property="checkin" column="checkin" />
         <result property="checkout" column="checkout" />
-        <result property="payment" column="payment" />
         <result property="roomId" column="room_id" />
-        <collection property="hotel" resultMap="hotel"/>
-        <collection property="Room" resultMap="Room"/>
-        <collection property="customer" resultMap="customer"/>
     </resultMap>
     <insert id="addReservation" parameterType="com.example.hotel.dto.Reservation">
-        INSERT INTO reservation VALUES (reservation_seq.nextval, #{customerId}, #{checkin}, #{checkout}, #{payment}, #{roomId})
+        INSERT INTO reservation (pay_id, customer_id, checkin, checkout, room_id)
+        VALUES (reservation_seq.nextval, #{customerId}, #{checkin}, #{checkout},  #{roomId})
     </insert>
-    <update id="calculatePayment" parameterType="com.example.hotel.dto.Reservation">
-        <![CDATA[
-    UPDATE reservation
-    SET payment = (SELECT price * (DATEDIFF(checkout, checkin)) FROM room WHERE room_id = #{roomId})
-    WHERE pay_id = #{payId}
-    ]]>
-    </update>
-    <update id="processPayment" parameterType="com.example.hotel.dto.Reservation">
-        UPDATE reservations
-        SET payment = #{payment}
-        WHERE pay_id = #{payId}
-    </update>
+    <select id="getAllReservations" resultType="com.example.hotel.dto.Reservation">
+        SELECT r.PAY_ID, r.CUSTOMER_ID, TO_CHAR(r.CHECKIN, 'YYYY-MM-DD') AS CHECKIN_DATE, TO_CHAR(r.CHECKOUT, 'YYYY-MM-DD') AS CHECKOUT_DATE, ro.ROOM_NAME
+        FROM reservation r
+        JOIN room ro ON r.ROOM_ID = ro.ROOM_ID
+    </select>
 </mapper>

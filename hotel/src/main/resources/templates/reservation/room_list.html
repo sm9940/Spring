@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout3}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room List</title>
+</head>
+
+<body style="color: white;">
+<main layout:fragment="content" class="main container mt-5">
+    <form action="/reservation" method="post">
+        <div class="form-group">
+            <label for="roomId">Select Room:</label>
+            <select id="roomId" name="roomId" class="form-control" required>
+                <option value="">Select Room</option>
+                <option th:each="room : ${rooms}" th:value="${room.roomId}" th:text="${room.roomName}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="checkInDate">Check-in Date:</label>
+            <input type="date" id="checkInDate" name="checkin" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="checkOutDate">Check-out Date:</label>
+            <input type="date" id="checkOutDate" name="checkout" class="form-control" required>
+        </div>
+        <input type="hidden" id="customerId" name="customerId" th:value="${customerId}">
+        <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+    </form>
+
+</main>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        function validateDateInput() {
+       var checkInDate = document.getElementById("checkInDate").value;
+       var checkOutDate = document.getElementById("checkOutDate").value;
+
+       if (checkInDate === "" || checkOutDate === "") {
+           alert("Check-in date and check-out date are required.");
+           return false;
+       }
+
+       var today = new Date().toISOString().split('T')[0];
+       if (checkInDate < today || checkOutDate < today) {
+           alert("Check-in date and check-out date cannot be in the past.");
+           return false;
+       }
+
+       if (checkOutDate <= checkInDate) {
+           alert("Check-out date must be after check-in date.");
+           return false;
+       }
+
+       return true;
+   }
+    </script>
+</th:block>
+</body>
+
+</html>

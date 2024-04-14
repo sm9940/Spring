@@ -35,5 +35,8 @@ public class HotelServiceImpl implements HotelService{
         return hotelDao.getRoomsByHotelId(hotelId);
     }
 
-
+    @Override
+    public String getRoomNameByRoomId(int roomId) {
+        return hotelDao.getRoomNameByRoomId(roomId);
+    }
 }

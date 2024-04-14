@@ -3,10 +3,13 @@ package com.example.hotel.service;
 
 import com.example.hotel.dao.ReservationDao;
 import com.example.hotel.dto.Reservation;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -21,11 +24,6 @@ public class ReservationServiceImpl implements ReservationService{
     }
 
     @Override
-    public void processPayment(Reservation reservation) {
-        reservationDao.processPayment(reservation);
-    }
-
-    @Override
     public Reservation getReservationById(int payId) {
         return reservationDao.getReservationById(payId);
     }
@@ -34,6 +32,8 @@ public class ReservationServiceImpl implements ReservationService{
     public List<Reservation> getAllReservations() {
         return reservationDao.getAllReservations();
     }
+
+
 
     @Override
     public void updateReservation(Reservation reservation) {
@@ -45,8 +45,19 @@ public class ReservationServiceImpl implements ReservationService{
         reservationDao.deleteReservation(payId);
     }
 
+
+
     @Override
-    public String showReservationPage(Model model, int hotelId) {
-        return reservationDao.showReservationPage(model,hotelId);
+    public int calculateNumberOfDays(String checkin, String checkout) {
+        // 문자열로된 날짜를 LocalDate 객체로 변환
+        LocalDate checkinDate = LocalDate.parse(checkin);
+        LocalDate checkoutDate = LocalDate.parse(checkout);
+
+        // 날짜 간의 일 수 계산
+        long numberOfDays = ChronoUnit.DAYS.between(checkinDate, checkoutDate);
+
+        // 계산 결과 반환 (int 형으로 변환)
+        return (int) numberOfDays;
     }
-}
+    }
+

@@ -37,7 +37,7 @@
                                             <li><a href="elements.html">elements</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a th:if="${session.name != null}" href="/list">예약목록</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -55,7 +55,7 @@
                                 <a th:if="${session.name == null}" class="popup-with-form" href="#test-form1">LOGIN</a>
                                 <span th:unless="${session.name== null}">
                                     <a href="/" th:text="${session.name +'님'}"></a>
-                                    <a href="/reservation">RESERVATION</a>
+                                    <a href="/reservation/form">RESERVATION</a>
                                     <a class="popup-with-form" href="#test-form2" th:if="${session.name != null}" th:text="${'잔액: '+session.balance}"></a>
                                     <a href="/logout">LOGOUT</a>
                                 </span>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout3}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Reservation Form</title>
+</head>
+
+<body>
+<main layout:fragment="content" class="main container mt-5">
+    <h1>Reservation List</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Reservation ID</th>
+            <th>Customer ID</th>
+            <th>Check-in Date</th>
+            <th>Check-out Date</th>
+            <th>Room ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reservation : ${reservations}">
+            <td th:text="${reservation.payId}">Reservation ID</td>
+            <td th:text="${reservation.customerId}">Customer ID</td>
+            <td th:text="${reservation.checkin}">Check-in Date</td>
+            <td th:text="${reservation.checkout}">Check-out Date</td>
+            <td th:text="${reservation.roomId}">Room ID</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+
+</html>

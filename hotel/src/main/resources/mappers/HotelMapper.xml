@@ -32,4 +32,9 @@
     <select id="getRoomsByHotelId" parameterType="int" resultMap="Room">
         SELECT * FROM room WHERE hotel_id = #{hotelId} order by room_id
     </select>
+    <select id="getRoomNameByRoomId" parameterType="int" resultType="String">
+        SELECT room_name
+        FROM room
+        WHERE room_id = #{roomId}
+    </select>
 </mapper>

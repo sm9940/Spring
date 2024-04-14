@@ -13,6 +13,6 @@ public interface HotelService {
     public List<Room>getAllHotelswithRooms();
   Hotel getHotelById(int hotelId);
   List<Room> getRoomsByHotelId(int hotelId);
-
+  String getRoomNameByRoomId(int roomId);
 
 }
