@@ -8,6 +8,8 @@ import com.example.hotel.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -58,20 +60,54 @@ public class ReservationController {
         model.addAttribute("reservation", reservation);
         return "/reservation/reservationComplete";
     }
-    @RequestMapping(value = "/list", method = { RequestMethod.GET, RequestMethod.POST })
+    @GetMapping("/list")
     public String list(HttpSession session, HttpServletRequest request, Model model) {
-        // 여기에 예약 목록을 가져오는 로직을 추가하세요
-        // 이 예시에서는 서비스 레이어를 사용하여 예약 목록을 가져오는 것으로 가정합니다.
-        // ReservationService reservationService;
+
         List<Reservation> reservations = reservationService.getAllReservations();
 
-        // 모델에 예약 목록을 추가합니다.
+
          model.addAttribute("reservations", reservations);
 
-        // reservation_list.html로 이동합니다.
+
         return "/reservation/reservation_list";
     }
 
+    @GetMapping("/view/{payId}")
+    public String view(@PathVariable("payId") int payId, HttpServletRequest request, Model model) {
+        // 예약 ID를 사용하여 해당 예약의 상세 정보를 조회합니다.
+        Reservation reservation = reservationService.getReservationById(payId);
+
+        // 조회된 예약이 없을 경우 처리
+        if (reservation == null) {
+            // 예약이 없다면 어떤 작업을 할지에 대한 로직을 추가하세요.
+            return "redirect:/"; // 예시로 메인 페이지로 리다이렉트합니다.
+        }
+
+        // 조회된 예약 정보를 모델에 추가하여 Thymeleaf 템플릿에 전달합니다.
+        model.addAttribute("reservation", reservation);
+
+        // 예약 상세 정보 페이지로 이동합니다.
+        return "reservation/view";
+    }
+    @DeleteMapping(value = "/delete/{payId}")
+    public @ResponseBody ResponseEntity deleteReservation(@PathVariable("payId") int payId, HttpSession session) {
+        try {
+
+            Object customerId = session.getAttribute("customer_id");
+
+            if(customerId == null) {
+                return new ResponseEntity<String>("삭제 실패. 관리자에게 문의하세요.", HttpStatus.UNAUTHORIZED);
+            } else {
+                reservationService.deleteReservation(payId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("삭제 실패. 관리자에게 문의하세요.", HttpStatus.BAD_REQUEST);
+        }
+        //ResponseEntity<첫번째 매개변수의 타입>(result결과, response상태코드)
+        //HttpsStatus.OK 일때는 ajax의 success함수로 결과가 출력된다.
+        return new ResponseEntity<Integer>(payId, HttpStatus.OK );
+    }
 
 
 

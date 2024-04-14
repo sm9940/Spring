@@ -10,17 +10,58 @@
 <body>
 <main layout:fragment="content" class="main container mt-5">
     <div class="container">
-        <h1>Reservation Details</h1>
+        <h1 style="color: white;">Reservation Details</h1>
         <div>
-            <p><strong>Reservation ID:</strong> <span th:text="${reservation.payId}"></span></p>
-            <p><strong>Customer ID:</strong> <span th:text="${reservation.customerId}"></span></p>
-            <p><strong>Check-in Date:</strong> <span th:text="${reservation.checkin}"></span></p>
-            <p><strong>Check-out Date:</strong> <span th:text="${reservation.checkout}"></span></p>
-            <p><strong>Room ID:</strong> <span th:text="${reservation.roomId}"></span></p>
+            <p style="color: white;"><strong>Hotel Name:</strong> <span th:text="${reservation.hotelName}"></span></p>
+            <p style="color: white;"><strong>Room name:</strong> <span th:text="${reservation.roomName}"></span></p>
+            <p style="color: white;"><strong>Reservation ID:</strong> <span th:text="${reservation.payId}"></span></p>
+            <p style="color: white;"><strong>Check-in Date:</strong> <span th:text="${reservation.checkin}"></span></p>
+            <p style="color: white;"><strong>Check-out Date:</strong> <span th:text="${reservation.checkout}"></span></p>
             <!-- 다른 필요한 정보들도 여기에 추가할 수 있습니다. -->
         </div>
+        <div>
+            <a th:href="@{'/edit/' + ${reservation.payId}}" class="btn btn-primary">수정</a>
+            <a  class="btn btn-danger" onclick="deleteReservation(); return false;">취소</a>
+        </div>
+
     </div>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            function deleteReservation() {
+            const result = confirm("해당 예약을 취소하시겠습니까?");
+            const url = '/delete/' + [[${reservation.payId}]]; // request URL
+
+            if(result) {
+                $.ajax({
+                    url : url,
+                    type : "DELETE", // 전송방식
+                    contentType : "application/json",
+                    dataType : "json",
+                    cache : false,
+                    success : function(result, status) {
+                        console.log("result postId: " + result + ", statusCode: " + status);
+                        location.href = '/list';
+
+                    },
+                    error : function(jqXHR, status, error) {
+                        console.log("result: " + jqXHR.responseText + ", statusCode: " + status);
+
+                        //삭제 권한이 없거나 로그인이 풀리면 로그인 페이지로 이동
+                        if(jqXHR.status == '401'){
+                        location.href = '/' ;
+                        } else {
+                        alert(jqXHR.responseText );
+                        }
+                    }
+       });
+            }
+
+
+        }
+        </script>
+    </th:block>
 </main>
+
 </body>
 
 </html>

@@ -24,7 +24,7 @@
             <!-- 예약 목록을 반복하면서 표시 -->
             <tr th:each="reservation : ${reservations}">
                 <td th:text="${reservation.hotelName}"></td>
-                <td th:text="${reservation.roomName}"></td>
+                <td ><a th:text="${reservation.roomName}" th:href="@{'/view/'+ ${reservation.payId}}"></a></td>
                 <td th:text="${reservation.checkin}"></td>
                 <td th:text="${reservation.checkout}"></td>
             </tr>
