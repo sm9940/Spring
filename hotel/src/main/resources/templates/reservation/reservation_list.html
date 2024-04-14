@@ -14,6 +14,7 @@
         <table class="table table-dark table-striped">
             <thead>
             <tr>
+                <th scope="col">Hotel Name</th>
                 <th scope="col">Room Name</th>
                 <th scope="col">Check-in Date</th>
                 <th scope="col">Check-out Date</th>
@@ -22,9 +23,10 @@
             <tbody>
             <!-- 예약 목록을 반복하면서 표시 -->
             <tr th:each="reservation : ${reservations}">
-                <td th:text="${reservation.roomId}"></td>
-                <td th:if="${reservation.checkin != null}" th:text="${reservation.checkin}"></td>
-                <td th:if="${reservation.checkout != null}" th:text="${reservation.checkout}"></td>
+                <td th:text="${reservation.hotelName}"></td>
+                <td th:text="${reservation.roomName}"></td>
+                <td th:text="${reservation.checkin}"></td>
+                <td th:text="${reservation.checkout}"></td>
             </tr>
             </tbody>
         </table>

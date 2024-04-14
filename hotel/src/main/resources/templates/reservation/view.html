@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout3}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Reservation Complete</title>
+</head>
+
+<body>
+<main layout:fragment="content" class="main container mt-5">
+    <div class="container">
+        <h1>Reservation Details</h1>
+        <div>
+            <p><strong>Reservation ID:</strong> <span th:text="${reservation.payId}"></span></p>
+            <p><strong>Customer ID:</strong> <span th:text="${reservation.customerId}"></span></p>
+            <p><strong>Check-in Date:</strong> <span th:text="${reservation.checkin}"></span></p>
+            <p><strong>Check-out Date:</strong> <span th:text="${reservation.checkout}"></span></p>
+            <p><strong>Room ID:</strong> <span th:text="${reservation.roomId}"></span></p>
+            <!-- 다른 필요한 정보들도 여기에 추가할 수 있습니다. -->
+        </div>
+    </div>
+</main>
+</body>
+
+</html>

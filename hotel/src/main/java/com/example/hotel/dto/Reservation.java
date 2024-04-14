@@ -10,6 +10,8 @@ public class Reservation {
     private String customerId;
     private String checkin;
     private String checkout;
+    private String roomName;
+    private String hotelName;
     private int payment;
     private int roomId;
     private Hotel hotel;

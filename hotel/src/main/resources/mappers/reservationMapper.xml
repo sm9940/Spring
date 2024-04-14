@@ -16,8 +16,11 @@
         VALUES (reservation_seq.nextval, #{customerId}, #{checkin}, #{checkout},  #{roomId})
     </insert>
     <select id="getAllReservations" resultType="com.example.hotel.dto.Reservation">
-        SELECT r.PAY_ID, r.CUSTOMER_ID, TO_CHAR(r.CHECKIN, 'YYYY-MM-DD') AS CHECKIN_DATE, TO_CHAR(r.CHECKOUT, 'YYYY-MM-DD') AS CHECKOUT_DATE, ro.ROOM_NAME
-        FROM reservation r
-        JOIN room ro ON r.ROOM_ID = ro.ROOM_ID
+        SELECT r.PAY_ID, r.CUSTOMER_ID as customerId, TO_CHAR(CHECKIN, 'YYYY-MM-DD') AS CHECKIN, TO_CHAR(r.CHECKOUT, 'YYYY-MM-DD') AS CHECKOUT, ro.ROOM_NAME as roomName , h.hotel_Name as hotelName
+        FROM reservation r,room ro, hotel h WHERE r.ROOM_ID  = ro.ROOM_ID AND h.HOTEL_ID =ro.HOTEL_ID
     </select>
+    <update id="editReservations" parameterType="com.example.hotel.dto.Reservation">
+        UPDATE reservation SET checkin = #{checkin}, checkout = #{checkout}, room_id = #{roomId}
+        WHERE pay_id = #{payId}
+    </update>
 </mapper>

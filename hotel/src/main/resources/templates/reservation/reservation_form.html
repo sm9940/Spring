@@ -9,27 +9,24 @@
 
 <body>
 <main layout:fragment="content" class="main container mt-5">
-    <h1>Reservation List</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>Reservation ID</th>
-            <th>Customer ID</th>
-            <th>Check-in Date</th>
-            <th>Check-out Date</th>
-            <th>Room ID</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="reservation : ${reservations}">
-            <td th:text="${reservation.payId}">Reservation ID</td>
-            <td th:text="${reservation.customerId}">Customer ID</td>
-            <td th:text="${reservation.checkin}">Check-in Date</td>
-            <td th:text="${reservation.checkout}">Check-out Date</td>
-            <td th:text="${reservation.roomId}">Room ID</td>
-        </tr>
-        </tbody>
-    </table>
+    <h1 class="mb-4" style="color:white;">Hotel Reservation</h1>
+    <h1 class="mb-4">Hotel Reservation</h1>
+    <form th:action="@{/rooms}" method="get">
+
+            <div class="form-group">
+                <label for="customerId">Customer ID:</label>
+                <input type="text" id="customerId" name="customerId" class="form-control" th:value="${customerId}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="hotelId">Select Hotel:</label>
+                <select id="hotelId" name="hotelId" class="form-control" required>
+                    <option value="">Select Hotel</option>
+                    <option th:each="hotel : ${hotels}" th:value="${hotel.hotelId}" th:text="${hotel.hotelName}"></option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Select Hotel</button>
+        </form>
 </main>
 </body>
 
