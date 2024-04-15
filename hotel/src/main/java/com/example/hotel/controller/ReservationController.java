@@ -3,6 +3,7 @@ package com.example.hotel.controller;
 import com.example.hotel.dto.Hotel;
 import com.example.hotel.dto.Reservation;
 import com.example.hotel.dto.Room;
+import com.example.hotel.service.CustomerService;
 import com.example.hotel.service.HotelService;
 import com.example.hotel.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +29,8 @@ public class ReservationController {
     @Autowired
     private HotelService hotelService;
 
+    @Autowired
+    private CustomerService customerService;
     @GetMapping("/rooms")
     public String getRoomsByHotel(@RequestParam("hotelId") int hotelId, Model model) {
 
@@ -150,5 +153,25 @@ public class ReservationController {
         // 수정이 완료되면 해당 예약의 상세 정보 페이지로 리다이렉트합니다.
         return "redirect:/view/" + reservation.getPayId();
     }
+    @PostMapping("/updateBalance")
+    public String updateCustomerBalance(HttpSession session, Reservation reservation) {
+        String customerId = (String) session.getAttribute("customer_id");
 
+        if (customerId == null) {
+            // 세션에 사용자 ID가 없으면 로그인 페이지로 리다이렉트합니다.
+            return "redirect:/login";
+        }
+
+        // 예약 정보로부터 결제 금액을 가져옵니다.
+        int payment = reservation.getPayment();
+
+        // 잔액을 업데이트합니다.
+        customerService.updateCustomerBalance(customerId, payment);
+
+        // 잔액 업데이트 후에는 예약 정보를 업데이트합니다.
+        reservationService.updateReservation(reservation);
+
+        // 업데이트가 완료되면 해당 예약의 상세 정보 페이지로 리다이렉트합니다.
+        return "redirect:/view/" + reservation.getPayId();
+    }
 }

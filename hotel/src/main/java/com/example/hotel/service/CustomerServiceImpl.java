@@ -23,4 +23,9 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getBalance(Customer customer) {
         return customerDao.getBalance(customer);
     }
+
+    @Override
+    public void updateCustomerBalance(String customerId, int payment) {
+        customerDao.updateCustomerBalance(customerId,payment);
+    }
 }
