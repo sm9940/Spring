@@ -150,4 +150,5 @@ public class ReservationController {
         // 수정이 완료되면 해당 예약의 상세 정보 페이지로 리다이렉트합니다.
         return "redirect:/view/" + reservation.getPayId();
     }
+
 }

@@ -52,5 +52,4 @@
         TO_CHAR(r.CHECKOUT, 'YYYY-MM-DD') AS CHECKOUT, ro.ROOM_NAME as roomName , h.hotel_Name as hotelName
         FROM reservation r,room ro, hotel h WHERE r.ROOM_ID  = ro.ROOM_ID AND h.HOTEL_ID =ro.HOTEL_ID AND r.PAY_ID = #{payId} order by pay_id
     </select>
-
 </mapper>

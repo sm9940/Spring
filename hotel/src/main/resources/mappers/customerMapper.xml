@@ -22,4 +22,9 @@
     <select id="getBalance" resultMap="Customer" resultType="Customer">
         select balance from customer where customer_id = #{customerId} and password = #{password}
     </select>
+    <update id="updateCustomerBalance" parameterType="map">
+        UPDATE customer
+        SET balance = balance - #{payment}
+        WHERE customer_id = #{customerId}
+    </update>
 </mapper>
