@@ -3,6 +3,7 @@ package com.example.hotel.service;
 
 
 import com.example.hotel.dto.Reservation;
+import com.example.hotel.dto.Room;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 
@@ -29,4 +30,8 @@ public interface ReservationService {
     public int calculateNumberOfDays(String checkin, String checkout);
 
     void editReservation(Reservation reservation);
+
+    Room selectRoomByRoomId(int roomId);
+
+    Reservation getReadReservation(int payId);
 }

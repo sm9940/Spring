@@ -3,6 +3,7 @@ package com.example.hotel.service;
 
 import com.example.hotel.dao.ReservationDao;
 import com.example.hotel.dto.Reservation;
+import com.example.hotel.dto.Room;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,16 @@ public class ReservationServiceImpl implements ReservationService{
     @Override
     public void editReservation(Reservation reservation) {
         reservationDao.editReservation(reservation);
+    }
+
+    @Override
+    public Room selectRoomByRoomId(int roomId) {
+        return reservationDao.selectRoomByRoomId(roomId);
+    }
+
+    @Override
+    public Reservation getReadReservation(int payId) {
+        return reservationDao.getReadReservation(payId);
     }
 }
 

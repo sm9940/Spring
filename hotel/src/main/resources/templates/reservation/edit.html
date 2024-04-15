@@ -9,21 +9,23 @@
 
 <body>
 <main layout:fragment="content" class="main container mt-5">
-    <h1 class="mb-4" style="color:white;">Hotel Reservation</h1>
-    <h1 class="mb-4">Hotel Reservation</h1>
-    <form action="/reservation/edit" method="get">
-        <input type="hidden" name="payId" value="${reservation.payId}" />
+    <h1>Edit Reservation</h1>
+    <form action="/update/edit" method="post">
+        <!-- 예약 ID를 숨은 입력 필드로 전달합니다. -->
+        <input type="hidden" name="payId" th:value="${reservation.payId}" />
         <div class="form-group">
             <label for="checkInDate">Check-in Date:</label>
-            <input type="date" id="checkInDate" name="checkin" class="form-control" value="${reservation.checkin}" required>
+            <!-- 현재 예약의 체크인 날짜를 입력 필드에 표시합니다. -->
+            <input type="date" id="checkInDate" name="checkin" class="form-control" th:value="${reservation.checkin}" required>
         </div>
         <div class="form-group">
             <label for="checkOutDate">Check-out Date:</label>
-            <input type="date" id="checkOutDate" name="checkout" class="form-control" value="${reservation.checkout}" required>
+            <!-- 현재 예약의 체크아웃 날짜를 입력 필드에 표시합니다. -->
+            <input type="date" id="checkOutDate" name="checkout" class="form-control" th:value="${reservation.checkout}" required>
         </div>
+        <!-- 수정 버튼을 누르면 서버로 폼 데이터를 전송합니다. -->
         <button type="submit" class="btn btn-primary">Confirm Edit</button>
     </form>
-
 </main>
 </body>
 

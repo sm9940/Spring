@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,6 +27,29 @@ public class ReservationController {
 
     @Autowired
     private HotelService hotelService;
+
+    @GetMapping("/rooms")
+    public String getRoomsByHotel(@RequestParam("hotelId") int hotelId, Model model) {
+
+      List<Room> rooms= hotelService.getRoomsByHotelId(hotelId);
+        model.addAttribute("rooms", rooms);
+        return "reservation/room_list";
+    }
+
+    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
+    public String list(HttpSession session, HttpServletRequest request, Model model) {
+        try {
+            String customerId = (String) session.getAttribute("customer_id");
+            List<Reservation> reservations = reservationService.getAllReservations();
+
+            model.addAttribute("reservations", reservations); // DB에서 가져온 전체 예약 리스트
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return "/reservation/reservation_list";
+    }
 
     @GetMapping(value ="/reservation/form")
     public String showReservationForm(Model model, HttpSession session) {
@@ -43,41 +68,25 @@ public class ReservationController {
 
         return "/reservation/reservation_form";
     }
-
-    @GetMapping("/rooms")
-    public String getRoomsByHotel(@RequestParam("hotelId") int hotelId, Model model) {
-
-      List<Room> rooms= hotelService.getRoomsByHotelId(hotelId);
-        model.addAttribute("rooms", rooms);
-        return "reservation/room_list";
-    }
-
     @RequestMapping(value = "/reservation", method = {RequestMethod.GET, RequestMethod.POST})
     public String processReservation(Reservation reservation, Model model, HttpSession session) {
         String customerId = (String) session.getAttribute("customer_id");
         reservation.setCustomerId(customerId);
 
-        // reservation 객체에서 방 정보를 가져옴
-        Room room = reservation.getRoom();
+        Room room = reservationService.selectRoomByRoomId(reservation.getRoomId()); // room 가져오기
+        if (room != null) {
+            // room이 null이 아닐 경우에만 가격 설정
+            int price = room.getPrice();
+            reservation.setPrice(price); // 예약 객체에 가격 설정
 
-        // 방의 가격 가져오기
-        int price = room.getPrice();
-        reservation.setPrice(price); // 예약 객체에 가격 설정
-
-        reservationService.addReservation(reservation);
-        model.addAttribute("reservation", reservation);
-        return "/reservation/reservationComplete";
-    }
-    @GetMapping("/list")
-    public String list(HttpSession session, HttpServletRequest request, Model model) {
-
-        List<Reservation> reservations = reservationService.getAllReservations();
-
-
-         model.addAttribute("reservations", reservations);
-
-
-        return "/reservation/reservation_list";
+            reservationService.addReservation(reservation);
+            model.addAttribute("reservation", reservation);
+            return "/reservation/reservationComplete";
+        } else {
+            // room이 null인 경우 처리
+            // 어떤 처리를 할지에 따라 로직 추가
+            return "redirect:/"; // 예시로 메인 페이지로 리다이렉트
+        }
     }
 
     @GetMapping("/view/{payId}")
@@ -117,20 +126,28 @@ public class ReservationController {
         return new ResponseEntity<Integer>(payId, HttpStatus.OK );
     }
 
+
+
     @GetMapping("/edit/{payId}")
-    public String editReservationForm(Reservation reservation,@PathVariable("payId") int payId, Model model) {
-        // payId에 해당하는 예약을 가져와서 모델에 추가하는 로직을 구현합니다.
-        int id = payId;
-       reservation= reservationService.getReservationById(id);
+    public String editReservation(@PathVariable("payId") int payId, Model model) {
+        // 예약을 수정하는 페이지로 이동합니다.
+        Reservation reservation = reservationService.getReservationById(payId);
         model.addAttribute("reservation", reservation);
-        return "/reservation/edit"; // 수정 폼으로 이동합니다.
+        return "reservation/edit"; // 수정 페이지로 이동합니다.
     }
 
-    @GetMapping("/reservation/edit")
-    public String editReservation(Reservation reservation, Model model) {
-        // 예약을 수정하는 로직을 구현합니다.
-        reservationService.editReservation(reservation);
-        model.addAttribute("reservation", reservation);
-        return "/reservation/editComplete"; // 수정 완료 페이지로 이동합니다.
+    @PostMapping("/update/edit")
+    public String updateReservation(@ModelAttribute("reservation") Reservation reservation, HttpSession session) {
+        String customerId = (String) session.getAttribute("customer_id");
+        if (customerId == null) {
+            // 세션에 사용자 ID가 없으면 로그인 페이지로 리다이렉트합니다.
+            return "redirect:/login";
+        }
+
+        // 예약을 업데이트합니다.
+        reservationService.updateReservation(reservation);
+
+        // 수정이 완료되면 해당 예약의 상세 정보 페이지로 리다이렉트합니다.
+        return "redirect:/view/" + reservation.getPayId();
     }
 }

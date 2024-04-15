@@ -21,6 +21,7 @@
             <!-- 다른 필요한 정보들도 여기에 추가할 수 있습니다. -->
         </div>
         <div>
+            <a th:href="@{'/payment/' + ${reservation.payId}}" class="btn btn-success">결제하기</a>
             <a th:href="@{'/edit/' + ${reservation.payId}}" class="btn btn-primary">수정</a>
             <a style="color:white;" class="btn btn-danger" onclick="deleteReservation(); return false;">취소</a>
         </div>

@@ -49,11 +49,7 @@ public class PagingUtil {
         if(currentPage == 0 || totalPage == 0){
             return "";
         }
-        if(listUrl.indexOf("?") != -1){ //쿼리스트링이 있을때(검색어가 있을때)
-            listUrl += "&";
-        } else { //쿼리스트링이 없을때(검색어가 없을때)
-            listUrl += "?";
-        }
+
 
         //1.  이전버튼 만들기
         currentPageSetup = (currentPage/ numPerBlock) * numPerBlock;
