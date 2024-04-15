@@ -45,7 +45,9 @@ public class ReservationController {
 
     @GetMapping("/rooms")
     public String getRoomsByHotel(@RequestParam("hotelId") int hotelId, Model model) {
+
         List<Room> rooms = hotelService.getRoomsByHotelId(hotelId);
+
         model.addAttribute("rooms", rooms);
         return "reservation/room_list";
     }

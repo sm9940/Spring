@@ -12,8 +12,8 @@
         <result property="roomId" column="room_id" />
     </resultMap>
     <insert id="addReservation" parameterType="com.example.hotel.dto.Reservation">
-        INSERT INTO reservation (pay_id, customer_id, checkin, checkout, room_id)
-        VALUES (reservation_seq.nextval, #{customerId}, #{checkin}, #{checkout},  #{roomId})
+        INSERT INTO RESERVATION (pay_id, customer_id, checkin, checkout, PAYMENT ,room_id)
+        VALUES (reservation_seq.nextval, #{customerId}, #{checkin},#{checkout}, (TO_DATE(#{checkout}, 'YYYY-MM-DD') - TO_DATE(#{checkin}, 'YYYY-MM-DD')+1) * #{price},#{roomId})
     </insert>
     <select id="getAllReservations" resultType="com.example.hotel.dto.Reservation">
         SELECT r.PAY_ID as payId, r.CUSTOMER_ID as customerId, TO_CHAR(CHECKIN, 'YYYY-MM-DD') AS CHECKIN, TO_CHAR(r.CHECKOUT, 'YYYY-MM-DD') AS CHECKOUT, ro.ROOM_NAME as roomName , h.hotel_Name as hotelName
@@ -24,7 +24,9 @@
         WHERE pay_id = #{payId}
     </update>
     <select id="getReservationById" resultType="com.example.hotel.dto.Reservation">
-        SELECT PAY_ID as payId,CUSTOMER_ID as customerId ,TO_CHAR(CHECKIN, 'YYYY-MM-DD') as checkin,to_char(checkout,'yyyy-mm-dd') as checkout ,ro.ROOM_NAME as roomName, h.HOTEL_NAME AS hotelName
+        SELECT PAY_ID as payId,CUSTOMER_ID as customerId ,TO_CHAR(CHECKIN, 'YYYY-MM-DD') as checkin,to_char(checkout,'yyyy-mm-dd') as checkout ,
+        ro.ROOM_NAME as roomName, h.HOTEL_NAME AS hotelName,
+        r.payment as payment
         FROM reservation r,ROOM ro,HOTEL h  WHERE r.ROOM_ID  = ro.ROOM_ID AND h.HOTEL_ID =ro.HOTEL_ID
         and pay_id = #{payId}
     </select>

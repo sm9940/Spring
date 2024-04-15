@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout3}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Reservation Complete</title>
+</head>
+
+<body>
+<main layout:fragment="content" class="main container mt-5">
+    <div class="detail-item">
+        <label>Check-in Date:</label>
+        <span>{{ checkinDate }}</span>
+    </div>
+    <div class="detail-item">
+        <label>Check-out Date:</label>
+        <span>{{ checkoutDate }}</span>
+    </div>
+    <div class="detail-item">
+        <label>Room Name:</label>
+        <span>{{ roomName }}</span>
+    </div>
+    <div class="detail-item">
+        <label>Hotel Name:</label>
+        <span>{{ hotelName }}</span>
+    </div>
+    <div class="detail-item">
+        <label>Price:</label>
+        <span>${{ price }}</span>
+    </div>
+</main>
+</body>
+
+</html>

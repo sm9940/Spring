@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ReservationDao {
@@ -18,7 +19,7 @@ public interface ReservationDao {
 
     List<Reservation> getAllReservations();
 
-
+    public List<Reservation> getReservationsWithPaging(Map map);
 
 
     public int calculateNumberOfDays(String checkin, String checkout);
@@ -27,5 +28,8 @@ public interface ReservationDao {
 
     void deleteReservation(int payId);
 
+    int getRoomPriceByRoomId(int roomId);
+    int payment(int payId);
 
+    public int getTotalReservationCount();
 }

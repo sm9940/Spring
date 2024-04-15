@@ -47,6 +47,12 @@
         AND SUBJECT LIKE '%%'
         AND  ${searchKey} LIKE '%' ||#{searchValue} ||'%'
     </select>
+    <select id="getReservationCount" parameterType="map" resultType="int">
+        SELECT nvl(count(*), 0)
+        FROM RESERVATION
+        WHERE CUSTOMER_ID = #{customerId}
+        AND ${searchKey} LIKE '%' || #{searchValue} || '%'
+    </select>
     <select id="getReadPost" parameterType="int" resultType="Post" resultMap="Post">
         SELECT p.POST_ID  ,p.SUBJECT , p.CONTENT ,p.WRITE_DATE,
         p.UPDATE_DATE ,p.VIEWS ,p.CATEGORY_CODE ,

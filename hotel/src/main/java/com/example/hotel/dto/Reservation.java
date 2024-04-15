@@ -12,6 +12,7 @@ public class Reservation {
     private String checkout;
     private String roomName;
     private String hotelName;
+    private int price;
     private int payment;
     private int roomId;
     private Hotel hotel;
