@@ -52,18 +52,16 @@ public class ReservationController {
         return "reservation/room_list";
     }
 
-    @PostMapping("/reservation")
+    @RequestMapping(value = "/reservation", method = {RequestMethod.GET, RequestMethod.POST})
     public String processReservation(Reservation reservation, Model model, HttpSession session) {
         String customerId = (String) session.getAttribute("customer_id");
         reservation.setCustomerId(customerId);
 
-        Hotel hotel = reservation.getHotel();
-
-
+        // reservation 객체에서 방 정보를 가져옴
         Room room = reservation.getRoom();
-        reservation.setRoom(room);
 
-        int price = reservation.getPrice(); // 방의 가격 가져오기
+        // 방의 가격 가져오기
+        int price = room.getPrice();
         reservation.setPrice(price); // 예약 객체에 가격 설정
 
         reservationService.addReservation(reservation);
