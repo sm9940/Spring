@@ -27,4 +27,6 @@ public interface ReservationService {
     void deleteReservation(int payId);
 
     public int calculateNumberOfDays(String checkin, String checkout);
+
+    void editReservation(Reservation reservation);
 }

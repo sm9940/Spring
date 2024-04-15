@@ -10,6 +10,13 @@
         <result property="checkin" column="checkin" />
         <result property="checkout" column="checkout" />
         <result property="roomId" column="room_id" />
+        <result property="price" column="price"/>
+        <!-- Room 객체에 대한 매핑 -->
+        <association property="room" javaType="com.example.hotel.dto.Room">
+            <result column="room_id" property="roomId"/>
+            <result column="room_name" property="roomName"/>
+            <result column="price" property="price"/>
+        </association>
     </resultMap>
     <insert id="addReservation" parameterType="com.example.hotel.dto.Reservation">
         INSERT INTO RESERVATION (pay_id, customer_id, checkin, checkout, PAYMENT ,room_id)
@@ -17,7 +24,7 @@
     </insert>
     <select id="getAllReservations" resultType="com.example.hotel.dto.Reservation">
         SELECT r.PAY_ID as payId, r.CUSTOMER_ID as customerId, TO_CHAR(CHECKIN, 'YYYY-MM-DD') AS CHECKIN, TO_CHAR(r.CHECKOUT, 'YYYY-MM-DD') AS CHECKOUT, ro.ROOM_NAME as roomName , h.hotel_Name as hotelName
-        FROM reservation r,room ro, hotel h WHERE r.ROOM_ID  = ro.ROOM_ID AND h.HOTEL_ID =ro.HOTEL_ID
+        FROM reservation r,room ro, hotel h WHERE r.ROOM_ID  = ro.ROOM_ID AND h.HOTEL_ID =ro.HOTEL_ID order by pay_id desc
     </select>
     <update id="editReservations" parameterType="com.example.hotel.dto.Reservation">
         UPDATE reservation SET checkin = #{checkin}, checkout = #{checkout}, room_id = #{roomId}

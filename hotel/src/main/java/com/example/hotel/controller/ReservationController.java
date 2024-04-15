@@ -38,6 +38,7 @@ public class ReservationController {
 
         model.addAttribute("customerId", customerId);
         List<Hotel> hotels = hotelService.getAllHotels();
+
         model.addAttribute("hotels", hotels);
 
         return "/reservation/reservation_form";
@@ -46,18 +47,25 @@ public class ReservationController {
     @GetMapping("/rooms")
     public String getRoomsByHotel(@RequestParam("hotelId") int hotelId, Model model) {
 
-        List<Room> rooms = hotelService.getRoomsByHotelId(hotelId);
-
+      List<Room> rooms= hotelService.getRoomsByHotelId(hotelId);
         model.addAttribute("rooms", rooms);
         return "reservation/room_list";
     }
 
     @PostMapping("/reservation")
-    public String processReservation(Reservation reservation, Model model, HttpServletRequest request) {
-        String customerId = (String) request.getSession().getAttribute("customer_id");
+    public String processReservation(Reservation reservation, Model model, HttpSession session) {
+        String customerId = (String) session.getAttribute("customer_id");
         reservation.setCustomerId(customerId);
+
+        Hotel hotel = reservation.getHotel();
+
+
         Room room = reservation.getRoom();
         reservation.setRoom(room);
+
+        int price = reservation.getPrice(); // 방의 가격 가져오기
+        reservation.setPrice(price); // 예약 객체에 가격 설정
+
         reservationService.addReservation(reservation);
         model.addAttribute("reservation", reservation);
         return "/reservation/reservationComplete";
@@ -111,6 +119,20 @@ public class ReservationController {
         return new ResponseEntity<Integer>(payId, HttpStatus.OK );
     }
 
+    @GetMapping("/edit/{payId}")
+    public String editReservationForm(Reservation reservation,@PathVariable("payId") int payId, Model model) {
+        // payId에 해당하는 예약을 가져와서 모델에 추가하는 로직을 구현합니다.
+        int id = payId;
+       reservation= reservationService.getReservationById(id);
+        model.addAttribute("reservation", reservation);
+        return "/reservation/edit"; // 수정 폼으로 이동합니다.
+    }
 
-
+    @GetMapping("/reservation/edit")
+    public String editReservation(Reservation reservation, Model model) {
+        // 예약을 수정하는 로직을 구현합니다.
+        reservationService.editReservation(reservation);
+        model.addAttribute("reservation", reservation);
+        return "/reservation/editComplete"; // 수정 완료 페이지로 이동합니다.
+    }
 }

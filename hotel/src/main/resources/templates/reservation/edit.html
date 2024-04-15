@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout3}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Reservation Form</title>
+</head>
+
+<body>
+<main layout:fragment="content" class="main container mt-5">
+    <h1 class="mb-4" style="color:white;">Hotel Reservation</h1>
+    <h1 class="mb-4">Hotel Reservation</h1>
+    <form action="/reservation/edit" method="get">
+        <input type="hidden" name="payId" value="${reservation.payId}" />
+        <div class="form-group">
+            <label for="checkInDate">Check-in Date:</label>
+            <input type="date" id="checkInDate" name="checkin" class="form-control" value="${reservation.checkin}" required>
+        </div>
+        <div class="form-group">
+            <label for="checkOutDate">Check-out Date:</label>
+            <input type="date" id="checkOutDate" name="checkout" class="form-control" value="${reservation.checkout}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Confirm Edit</button>
+    </form>
+
+</main>
+</body>
+
+</html>

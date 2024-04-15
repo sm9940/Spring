@@ -32,4 +32,5 @@ public interface ReservationDao {
     int payment(int payId);
 
     public int getTotalReservationCount();
+    void editReservation(Reservation reservation);
 }

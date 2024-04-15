@@ -59,5 +59,10 @@ public class ReservationServiceImpl implements ReservationService{
         // 계산 결과 반환 (int 형으로 변환)
         return (int) numberOfDays;
     }
+
+    @Override
+    public void editReservation(Reservation reservation) {
+        reservationDao.editReservation(reservation);
     }
+}
 
