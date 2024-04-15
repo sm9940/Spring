@@ -36,4 +36,5 @@ public interface ReservationDao {
     void editReservation(Reservation reservation);
     Room selectRoomByRoomId(int roomId);
     Reservation getReadReservation(int payId);
+
 }

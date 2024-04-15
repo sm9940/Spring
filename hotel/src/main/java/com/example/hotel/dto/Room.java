@@ -11,4 +11,5 @@ public class Room {
     private  int price;
     private String roomImg;
     private Hotel hotel;
+    private int hotelId;
 }

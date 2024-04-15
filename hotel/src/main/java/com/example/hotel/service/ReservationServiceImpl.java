@@ -75,5 +75,7 @@ public class ReservationServiceImpl implements ReservationService{
     public Reservation getReadReservation(int payId) {
         return reservationDao.getReadReservation(payId);
     }
+
+
 }
 

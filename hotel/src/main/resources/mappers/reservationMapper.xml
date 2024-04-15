@@ -26,7 +26,9 @@
         SELECT * FROM room WHERE room_id = #{roomId}
     </select>
     <select id="getAllReservations" resultType="com.example.hotel.dto.Reservation">
-        SELECT r.PAY_ID as payId, r.CUSTOMER_ID as customerId, TO_CHAR(CHECKIN, 'YYYY-MM-DD') AS CHECKIN, TO_CHAR(r.CHECKOUT, 'YYYY-MM-DD') AS CHECKOUT, ro.ROOM_NAME as roomName , h.hotel_Name as hotelName
+        SELECT r.PAY_ID as payId, r.CUSTOMER_ID as customerId, TO_CHAR(CHECKIN, 'YYYY-MM-DD') AS CHECKIN,
+        TO_CHAR(r.CHECKOUT, 'YYYY-MM-DD') AS CHECKOUT, ro.ROOM_NAME as roomName , h.hotel_Name as hotelName,
+        ro.hotel_id as hotelId
         FROM reservation r,room ro, hotel h WHERE r.ROOM_ID  = ro.ROOM_ID AND h.HOTEL_ID =ro.HOTEL_ID order by pay_id
     </select>
     <update id="updateReservation" parameterType="com.example.hotel.dto.Reservation">
@@ -37,7 +39,7 @@
     </update>
     <select id="getReservationById" resultType="com.example.hotel.dto.Reservation">
         SELECT PAY_ID as payId,CUSTOMER_ID as customerId ,TO_CHAR(CHECKIN, 'YYYY-MM-DD') as checkin,to_char(checkout,'yyyy-mm-dd') as checkout ,
-        ro.ROOM_NAME as roomName, h.HOTEL_NAME AS hotelName,
+        ro.ROOM_NAME as roomName, h.HOTEL_NAME AS hotelName,ro.price as price,
         r.payment as payment
         FROM reservation r,ROOM ro,HOTEL h  WHERE r.ROOM_ID  = ro.ROOM_ID AND h.HOTEL_ID =ro.HOTEL_ID
         and pay_id = #{payId}
@@ -50,4 +52,5 @@
         TO_CHAR(r.CHECKOUT, 'YYYY-MM-DD') AS CHECKOUT, ro.ROOM_NAME as roomName , h.hotel_Name as hotelName
         FROM reservation r,room ro, hotel h WHERE r.ROOM_ID  = ro.ROOM_ID AND h.HOTEL_ID =ro.HOTEL_ID AND r.PAY_ID = #{payId} order by pay_id
     </select>
+
 </mapper>

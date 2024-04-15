@@ -13,6 +13,8 @@
     <form action="/update/edit" method="post">
         <!-- 예약 ID를 숨은 입력 필드로 전달합니다. -->
         <input type="hidden" name="payId" th:value="${reservation.payId}" />
+
+
         <div class="form-group">
             <label for="checkInDate">Check-in Date:</label>
             <!-- 현재 예약의 체크인 날짜를 입력 필드에 표시합니다. -->
