@@ -20,7 +20,7 @@
     </resultMap>
     <insert id="addReservation" parameterType="com.example.hotel.dto.Reservation">
         INSERT INTO RESERVATION (pay_id, customer_id, checkin, checkout, PAYMENT ,room_id)
-        VALUES (reservation_seq.nextval, #{customerId}, #{checkin},#{checkout}, (TO_DATE(#{checkout}, 'YYYY-MM-DD') - TO_DATE(#{checkin}, 'YYYY-MM-DD')+1) * #{price},#{roomId})
+        VALUES (reservation_seq.nextval, #{customerId}, #{checkin},#{checkout}, (TO_DATE(#{checkout}, 'YYYY-MM-DD') - TO_DATE(#{checkin}, 'YYYY-MM-DD')) * #{price},#{roomId})
     </insert>
     <select id="selectRoomByRoomId" parameterType="int" resultType="com.example.hotel.dto.Room">
         SELECT * FROM room WHERE room_id = #{roomId}
