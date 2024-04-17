@@ -2,6 +2,11 @@ package com.example.springbasic2.repository;
 
 import com.example.springbasic2.constant.ItemSellStatus;
 import com.example.springbasic2.entity.Item;
+import com.example.springbasic2.entity.QItem;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,5 +129,130 @@ public void quiz1_7Test(){
     for (Item item: itemList){
         System.out.println(item);
     }
+}@Test
+@DisplayName("JPQL @Query를 이용한 상품 조회 테스트")
+public void findByItemDetail(){
+        List<Item> itemList= itemRepository.findByItemDetail("테스트 상품 상세");
+    for (Item item: itemList){
+        System.out.println(item);
+    }
 }
+@Test
+@DisplayName("퀴즈2-1")
+public void quiz2_1Test(){
+List<Item> itemList = itemRepository.getPrice(50000);
+    for (Item item: itemList){
+        System.out.println(item);
+    }
+}
+    @Test
+    @DisplayName("퀴즈2-2")
+    public void quiz2_2Test(){
+        List<Item> itemList = itemRepository.findItemNmAndItemSellStatus("테스트 상품1",ItemSellStatus.SELL);
+        for (Item item: itemList){
+            System.out.println(item);
+        }
+    }
+    @Test
+    public void quiz2_3Test(){
+        List<Item> itemList = itemRepository.findById(7L);
+        for (Item item: itemList){
+            System.out.println(item);
+        }
+    }
+    @Test
+    @DisplayName("native query")
+    public void  findByItemDetailByNative(){
+        List<Item> itemList = itemRepository. findByItemDetailByNative("테스트 상품 상세");
+        for (Item item: itemList){
+            System.out.println(item);
+        }
+    }
+
+    @PersistenceContext
+    EntityManager em; //엔티티 매니저 객체(쿼리문 실행)
+    @Test
+    @DisplayName("querydsl 조회 테스트")
+    public void queryDslTest(){
+        JPAQueryFactory qf = new JPAQueryFactory(em);
+        QItem qItem= QItem.item; //Item 엔티티 객체
+        // select * from item where item_seel_status= 'SELL' and
+        // item_detail like '%테스트 상품 상세%' order by price desc;
+
+        //쿼리문 실행했을때 결과값을 담을 엔티티 타입을 제네릭에 선언
+        JPAQuery<Item> query = qf.selectFrom(qItem)
+                .where(qItem.itemSellStatus.eq(ItemSellStatus.SELL))
+                .where(qItem.itemDetail.like("%테스트 상품 상세%"))
+                .orderBy(qItem.price.desc());
+        List<Item> itemList = query.fetch();
+        for (Item item: itemList){
+            System.out.println(item);
+        }
+    }
+    @Test
+    @DisplayName("퀴즈 3-1")
+    public void quiz3_1Test(){
+        JPAQueryFactory qf =new JPAQueryFactory(em);
+        QItem qItem =QItem.item;
+
+        JPAQuery<Item> query = qf.selectFrom(qItem)
+                .where(qItem.itemNm.eq("테스트 상품1"))
+                .where(qItem.itemSellStatus.eq(ItemSellStatus.SELL));
+        List<Item> itemList = query.fetch();
+        for (Item item: itemList){
+            System.out.println(item);
+        }
+    }
+    @Test
+    @DisplayName("퀴즈 3-2")
+    public void quiz3_2Test(){
+        JPAQueryFactory qf = new JPAQueryFactory(em);
+        QItem qItem = QItem.item;
+
+        JPAQuery<Item> query =qf.selectFrom(qItem)
+                .where(qItem.price.between(10000,80000));
+        List<Item> itemList =query.fetch();
+        for (Item item: itemList){
+            System.out.println(item);
+        }
+    }
+    @Test
+    @DisplayName("퀴즈 3-3")
+    public void quiz3_3Test(){
+        JPAQueryFactory qf = new JPAQueryFactory(em);
+        QItem qItem =QItem.item;
+
+        JPAQuery<Item> query = qf.selectFrom(qItem)
+                .where(qItem.regTime.after(LocalDateTime.of(2023,1,1,12,12,44)));
+        List<Item> itemList = query.fetch();
+        for (Item item: itemList){
+            System.out.println(item);
+        }
+    }
+    @Test
+    @DisplayName("퀴즈 3-4")
+    public void quiz3_4Test(){
+        JPAQueryFactory qf = new JPAQueryFactory(em);
+        QItem qItem =QItem.item;
+
+        JPAQuery<Item> query = qf.selectFrom(qItem)
+                .where(qItem.itemSellStatus.isNotNull());
+        List<Item> itemList =query.fetch();
+        for(Item item:itemList){
+            System.out.println(item);
+        }
+    }
+    @Test
+    @DisplayName("퀴즈 3-5")
+    public void quiz3_5Test(){
+        JPAQueryFactory qf = new JPAQueryFactory(em);
+        QItem qItem = QItem.item;
+
+        JPAQuery<Item> query =qf.selectFrom(qItem)
+                .where(qItem.itemDetail.endsWith("설명1"));
+        List<Item> itemList = query.fetch();
+        for (Item item: itemList){
+            System.out.println(item);
+        }
+    }
 }
