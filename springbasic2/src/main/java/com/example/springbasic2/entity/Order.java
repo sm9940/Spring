@@ -4,13 +4,16 @@ import com.example.springbasic2.constant.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "orders")
 @Setter
 @Getter
-public class Orders {
+@ToString
+public class Order {
     @Id
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
