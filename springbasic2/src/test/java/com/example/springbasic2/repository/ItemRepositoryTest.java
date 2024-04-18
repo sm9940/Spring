@@ -11,6 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.TestPropertySource;
 
@@ -43,6 +45,7 @@ public class ItemRepositoryTest  {
     }
 
     // 데이터 10개 저장
+    @Test
     public void createItemList(){
         for (int i = 1; i <=10 ; i++) {
             Item item = new Item();
@@ -251,6 +254,33 @@ List<Item> itemList = itemRepository.getPrice(50000);
         JPAQuery<Item> query =qf.selectFrom(qItem)
                 .where(qItem.itemDetail.endsWith("설명1"));
         List<Item> itemList = query.fetch();
+        for (Item item: itemList){
+            System.out.println(item);
+        }
+    }
+    @Test
+    @DisplayName("querydsl 조회 테스트2")
+    public void queryDslTest2(){
+        JPAQueryFactory qf = new JPAQueryFactory(em);
+        QItem qItem = QItem.item;
+        /*
+        select * from Item
+        where item_sell_status = 'SELL'
+        and item_detail like '%테스트 상품 상세%'
+        and price > 10003;
+         */
+
+        Pageable page = PageRequest.of(0,4);
+        //of(시작페이지 번호(0부터 시작), 한페이지당 조회할 레코드의 갯수)
+        JPAQuery<Item> query =qf.selectFrom(qItem)
+                .where(qItem.itemSellStatus.eq(ItemSellStatus.SELL))
+                .where(qItem.itemDetail.like("%테스트 상품 상세%"))
+                .where(qItem.price.gt(30000))
+                .offset(page.getOffset())
+                .limit(page.getPageSize());
+
+        List<Item> itemList = query.fetch();
+
         for (Item item: itemList){
             System.out.println(item);
         }
