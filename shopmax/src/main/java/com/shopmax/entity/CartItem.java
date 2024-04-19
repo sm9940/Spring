@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CartItem {
+public class CartItem extends BaseEntity{
     @Id
     @Column(name = "cart_item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +18,11 @@ public class CartItem {
 
     private int count; //상품수량
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id") //fk키
     private Cart cart; //CartItem은 Cart를 참조한다
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id") //fk키
     private Item item; //CartItem은 item을 참조한다.
 }
