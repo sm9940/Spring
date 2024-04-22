@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequiredArgsConstructor
 public class PostController {
-    @GetMapping(value = "/list")
+    @GetMapping(value = "/post/list")
     public String list(){
         return "/post/list";
     }
-    @GetMapping(value = "/view")
+    @GetMapping(value = "/post/view")
     public String view(){
         return "post/view";
     }
-    @GetMapping(value = "/write")
+    @GetMapping(value = "/post/write")
     public String write(){
         return "post/write";
     }
-    @GetMapping(value = "/rewrite")
+    @GetMapping(value = "/post/rewrite")
     public String rewrite(){
         return "post/rewrite";
     }

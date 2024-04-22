@@ -20,9 +20,9 @@
                             </ul>
                         </li>
                         <li><a href="event.html">Event</a></li>
-                        <li><a href="/list">게시판 목록</a></li>
-                        <li><a href="/members/login">로그인</a></li>
-                        <li><a href="/members/logout">로그아웃</a></li>
+                        <li><a href="/post/list" sec:authorize="isAuthenticated()">게시판 목록</a></li>
+                        <li><a href="/members/login" sec:authorize="isAnonymous()">로그인</a></li>
+                        <li><a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
                     </ul>
                 </div>
             </div>
