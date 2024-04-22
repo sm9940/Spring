@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,8 @@ public class CartTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @PersistenceContext
     EntityManager em;
     public  Member createMember(){
@@ -34,7 +37,7 @@ public class CartTest {
         memberFormDto.setPassword("1234");
 
         //DTO -> Entity 객체로 변환(JPA는 엔티티 객체로 CRUD를 진행)
-        Member member = Member.createMember(memberFormDto);
+        Member member = Member.createMember(memberFormDto,passwordEncoder);
         return member;
     }
 
