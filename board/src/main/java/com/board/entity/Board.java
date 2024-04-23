@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class Board {
+public class Board extends BaseEntity {
     @Id
     @Column(name="board_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
