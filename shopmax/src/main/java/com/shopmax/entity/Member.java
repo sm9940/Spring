@@ -48,8 +48,8 @@ public class Member extends BaseEntity{
         member.setPassword(password); //DB에는 최종적으로 암호화된 패스워드가 저장되도록 한다.
 
         //개발자가 지정해줘야 하는 정보
-        member.setRole(Role.USER); //일반 사용자로 가입할때
-        //member.setRole(Role.ADMIN); //관리자로 가입할때
+        //member.setRole(Role.USER); //일반 사용자로 가입할때
+        member.setRole(Role.ADMIN); //관리자로 가입할때
         return member;
     }
 }
