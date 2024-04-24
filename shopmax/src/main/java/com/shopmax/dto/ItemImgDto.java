@@ -16,7 +16,7 @@ public class ItemImgDto {
 
     private static ModelMapper modelMapper=new ModelMapper();
 
-    private static ItemImgDto of(ItemImg itemImg){
+    public static ItemImgDto of(ItemImg itemImg){
         return modelMapper.map(itemImg,ItemImgDto.class); //ItemImgDto 객체를 리턴
     }
 }

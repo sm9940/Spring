@@ -2,6 +2,7 @@ package com.shopmax.service;
 
 import com.shopmax.entity.ItemImg;
 import com.shopmax.repository.ItemImgRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,25 @@ public class ItemImgService {
         itemImg.updateItemImg(oriImgName,imgName,imgUrl);
         itemImgRepository.save(itemImg); //insert
     }
+public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) throws Exception{
+        if(!itemImgFile.isEmpty()){ //첨부한 이미지 파일이 있으면
+            //1. 서버에 있는 이미지를 가지고 와서 수정해준다.
+            ItemImg saveItemImg = itemImgRepository.findById(itemImgId).orElseThrow(EntityNotFoundException::new);
 
+            //기존 이미지 파일을 c:/shop/item 폴더에서 삭제
+            if(!StringUtils.isEmpty(saveItemImg.getImgName())){
+                fileService.deleteFile(itemImgLocation + "/"+saveItemImg.getImgName());
+            }
+
+            //수정된 이미지 파일을 경로에 업로드
+            String oriImgName = itemImgFile.getOriginalFilename();
+            String imgName = fileService.uploadFile(itemImgLocation,oriImgName,itemImgFile.getBytes());
+            String imgUrl = "/images/item/" + imgName;
+
+            //2. item_img 테이블에 저장된 데이터를 수정해준다.
+            //update (JPA가 자동감지)
+            saveItemImg.updateItemImg(oriImgName,imgName,imgUrl);
+
+        }
+}
 }
