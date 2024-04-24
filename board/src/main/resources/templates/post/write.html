@@ -26,14 +26,19 @@
                                                    type="text" required>
                                             <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fieldError">Incorrect Data</p>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="editor">글쓰기</label>
-                                            <div id ="editor"></div>
-                                            <textarea th:field="*{content}" name="content" style="display:none;"></textarea>
-                                            <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">Incorrect Data</p>
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <label th:for="content" class="text-black">글쓰기</label>
+                                                <textarea rows="10" class="form-control" placeholder="글 내용" th:field="*{content}" name="content" ></textarea>
+                                                <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">Incorrect Data</p>
+                                            </div>
                                         </div>
-
+                                        <div class="form-group row" th:each="num: ${#numbers.sequence(1,5)}">
+                                            <div class="col-md-12">
+                                                <label for="itemImgFile" class="form-label"></label>
+                                                <input class="form-control" type="file" id="itemImgFile" name="itemImgFile" />
+                                            </div>
+                                        </div>
                                         <button class="btn btn-primary solid blank mt-3" type="button" onclick="beforeSubmit(); return false;">
                                             포스트 등록하기
                                         </button>
@@ -52,22 +57,10 @@
 <th:block layout:fragment="script">
     <script th:src="@{/ckeditor5/build/ckeditor.js}"></script>
     <script th:inline="javascript">
-        let myEditor;
-        ClassicEditor
-      .create( document.querySelector( '#editor' ),{
-                ckfinder: {
-                        uploadUrl : '/postImgUpload' //이미지 request 경로 지정
-                }
-       } )
-      .then(editor => {
-            myEditor = editor; //생성한 에디터 객체
-      })
-      .catch( error => {
-          console.error( error );
-      } );
+
 
         function beforeSubmit(){
-            const content = myEditor.getData(); //에디터창에 입력한 데이터 가져오기
+           //에디터창에 입력한 데이터 가져오기
             const f = document.BoardForm;
             if(f.title.value == ' '){
                     alert(' 제목을 등록해주세요'); return;
@@ -75,7 +68,7 @@
             if(content == ' '){
                     alert(' 내용을 등록해주세요'); return;
             }
-                f.content.value =  content; //textarea에 에디터에 입력한 내용을 넣어준다.
+
                 f.submit(); //전송
         }
     </script>
