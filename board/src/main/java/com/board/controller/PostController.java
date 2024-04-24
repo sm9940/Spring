@@ -9,6 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,10 +33,11 @@ public class PostController {
         return "post/write";
     }
     @PostMapping(value = "/insert")
-    public String write(@Valid BoardFormDto boardFormDto, BindingResult bindingResult,Model model){
+    public String write(@Valid BoardFormDto boardFormDto, BindingResult bindingResult,
+                        @RequestParam("boardImgFile")List<MultipartFile> boardImgFileList, Model model){
         if(bindingResult.hasErrors()) return "post/write";
         try {
-            boardService.savePost(boardFormDto);
+            boardService.savePost(boardFormDto,boardImgFileList);
         } catch (Exception e){
             e.printStackTrace();
             model.addAttribute("errorMessage","게시물 등록중 에러가 발생했습니다.");
