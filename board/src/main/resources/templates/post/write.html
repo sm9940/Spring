@@ -14,22 +14,23 @@
 
                             <h2 class="mb-4">포스트 작성</h2>
 
-                            <form  class="contact-form" method="post" action="/insert" th:object="${BoardFormDto}" name="BoardForm">
+                            <form  class="contact-form" method="post" action="/insert" enctype="multipart/form-data" th:object="${boardFormDto}" name="BoardForm">
+                                <input type="hidden" />
                                 <div class="row">
                                     <div class="col-md-12">
                                         <!-- https://getbootstrap.com/docs/4.1/components/forms/#form-controls -->
 
 
                                         <div class="form-group">
-                                            <label for="title">제목</label>
-                                            <input class="form-control form-control-name" name="title" id="title"
+                                            <label th:for="title">제목</label>
+                                            <input class="form-control form-control-name" th:field="*{title}"
                                                    type="text" required>
                                             <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fieldError">Incorrect Data</p>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-md-12">
                                                 <label th:for="content" class="text-black">글쓰기</label>
-                                                <textarea rows="10" class="form-control" placeholder="글 내용" th:field="*{content}" name="content" ></textarea>
+                                                <textarea rows="10" class="form-control" placeholder="글 내용" th:field="*{content}" ></textarea>
                                                 <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">Incorrect Data</p>
                                             </div>
                                         </div>

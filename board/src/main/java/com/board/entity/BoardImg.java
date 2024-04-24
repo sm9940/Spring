@@ -11,6 +11,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BoardImg extends BaseEntity{
+    @Id
+    @Column(name = "board_img_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String imgName;
     private String oriImgName;

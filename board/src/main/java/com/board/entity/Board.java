@@ -1,5 +1,6 @@
 package com.board.entity;
 
+import com.board.dto.BoardFormDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,4 +28,9 @@ public class Board extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="member_id")
     private Member member;
+
+    public  void updateBoard(BoardFormDto itemFormDto){
+        this.title = itemFormDto.getTitle();
+        this.content =itemFormDto.getContent();
+    }
 }

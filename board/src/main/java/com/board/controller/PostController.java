@@ -28,14 +28,18 @@ public class PostController {
     }
     @GetMapping(value = "/post/write")
     public String write(Model model){
-        model.addAttribute("BoardFormDto",new BoardFormDto());
+        model.addAttribute("boardFormDto",new BoardFormDto());
 
         return "post/write";
     }
     @PostMapping(value = "/insert")
     public String write(@Valid BoardFormDto boardFormDto, BindingResult bindingResult,
-                        @RequestParam("boardImgFile")List<MultipartFile> boardImgFileList, Model model){
+                        @RequestParam("boardImgFile") List<MultipartFile> boardImgFileList, Model model){
         if(bindingResult.hasErrors()) return "post/write";
+        if(boardImgFileList.get(0).isEmpty()){
+            model.addAttribute("errorMessage","첫번째 상품 이미지를 입력해주세요");
+            return "post/write";
+        }
         try {
             boardService.savePost(boardFormDto,boardImgFileList);
         } catch (Exception e){
