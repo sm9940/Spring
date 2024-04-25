@@ -29,7 +29,7 @@ public class BoardImgService {
         if(!StringUtils.isEmpty(oriImgName)){
             imgName = fileService.uploadFile(boardImgLocation,oriImgName,boardImgFile.getBytes());
 
-            imgUrl="/images/board/"+imgName;
+            imgUrl="/images/img/"+imgName;
         }
 
         boardImg.updateBoardImg(oriImgName,imgName,imgUrl);
