@@ -1,5 +1,6 @@
 package com.board.dto;
 
+import com.board.constant.Category;
 import com.board.entity.Board;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class BoardFormDto {
     private String title;
     @NotBlank(message = "내용을 입력해주세요")
     private String content;
+    private Category category;
 
     private static ModelMapper modelMapper=new ModelMapper();
     public Board insertPost(){return modelMapper.map(this,Board.class);}

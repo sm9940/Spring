@@ -1,5 +1,6 @@
 package com.board.entity;
 
+import com.board.constant.Category;
 import com.board.dto.BoardFormDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,6 +26,9 @@ public class Board extends BaseEntity {
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
     @ManyToOne
     @JoinColumn(name="member_id")
     private Member member;
@@ -32,5 +36,6 @@ public class Board extends BaseEntity {
     public  void updateBoard(BoardFormDto itemFormDto){
         this.title = itemFormDto.getTitle();
         this.content =itemFormDto.getContent();
+        this.category=itemFormDto.getCategory();
     }
 }

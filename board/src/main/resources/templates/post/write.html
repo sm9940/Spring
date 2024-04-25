@@ -16,6 +16,15 @@
 
                             <form  class="contact-form" method="post" action="/insert" enctype="multipart/form-data" th:object="${boardFormDto}" name="BoardForm">
                                 <input type="hidden" />
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <select class="form-select" th:field="*{category}">
+                                            <option value="SPORTS">스포츠</option>
+                                            <option value="GAME">게임</option>
+                                            <option value="ENT">연예</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <!-- https://getbootstrap.com/docs/4.1/components/forms/#form-controls -->
