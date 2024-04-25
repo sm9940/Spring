@@ -35,6 +35,21 @@ public class BoardImgService {
         boardImg.updateBoardImg(oriImgName,imgName,imgUrl);
         boardImgRepository.save(boardImg);
     }
+public void updateBoardImg(Long boardImgId, MultipartFile boardImgFile) throws Exception{
+        if(!boardImgFile.isEmpty()){
+            BoardImg saveBoardImg = boardImgRepository.findById(boardImgId).orElseThrow(EntityNotFoundException::new);
 
+            if(!StringUtils.isEmpty(saveBoardImg.getImgName())){
+                fileService.deleteFile(boardImgLocation+"/"+saveBoardImg.getImgName());
+            }
+            String oriImgName = boardImgFile.getOriginalFilename();
+            String imgName = fileService.uploadFile(boardImgLocation,oriImgName,boardImgFile.getBytes());
+            String imgUrl = "/images/img/" + imgName;
+
+            saveBoardImg.updateBoardImg(oriImgName,imgName,imgUrl);
+        }
+
+
+}
 
 }

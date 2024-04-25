@@ -64,8 +64,36 @@ public class PostController {
         }
         return "redirect:/post/list";
     }
-    @GetMapping(value = "/post/rewrite")
-    public String rewrite(){
+    @GetMapping(value = "/post/rewrite/{boardId}")
+    public String rewrite(@PathVariable("boardId") Long boardId, Model model){
+        try {
+            BoardFormDto boardFormDto = boardService.getBoardView(boardId);
+            model.addAttribute("boardFormDto",boardFormDto);
+        } catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("errorMessage","게시물 정보를 가져오는 도중 에러가 발생했습니다.");
+
+            model.addAttribute("boardFormDto",new BoardFormDto());
+            return "post/rewrite";
+        }
         return "post/rewrite";
+    }
+
+    @PostMapping(value = "/post/rewrite/{boardId}")
+    private String update(@Valid BoardFormDto boardFormDto, BindingResult bindingResult,
+                          @RequestParam("boardImgFile") List<MultipartFile> boardImgFileList, Model model,
+                          @PathVariable("boardId")Long boardId){
+        if(bindingResult.hasErrors()) return "post/rewrite";
+        BoardFormDto getBoardFormDto = boardService.getBoardView(boardId);
+
+        try {
+            boardService.updateBoard(boardFormDto,boardImgFileList);
+        } catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("errorMessage","게시물 수정 중 에러가 발생했습니다.");
+            model.addAttribute("boardFormDto",getBoardFormDto);
+            return "post/rewrite";
+        }
+        return "redirect:/";
     }
 }

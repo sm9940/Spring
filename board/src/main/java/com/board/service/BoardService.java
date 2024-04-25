@@ -59,4 +59,17 @@ public class BoardService {
         boardFormDto.setBoardImgDtoList(boardImgDtoList);
         return boardFormDto;
     }
+
+    public Long updateBoard(BoardFormDto boardFormDto,List<MultipartFile> boardImgFileList) throws Exception{
+        Board board = boardRepository.findById(boardFormDto.getId()).orElseThrow(EntityNotFoundException::new);
+
+        board.updateBoard(boardFormDto);
+
+        List<Long> boardImgIds= boardFormDto.getBoardImgIds();
+
+        for (int i = 0; i <boardImgFileList.size() ; i++) {
+            boardImgService.updateBoardImg(boardImgIds.get(i),boardImgFileList.get(i));
+        }
+        return board.getId();
+    }
 }
