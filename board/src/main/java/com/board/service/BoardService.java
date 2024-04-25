@@ -1,15 +1,21 @@
 package com.board.service;
 
 import com.board.dto.BoardFormDto;
+import com.board.dto.BoardImgDto;
+import com.board.dto.BoardSearchDto;
 import com.board.entity.Board;
 import com.board.entity.BoardImg;
 import com.board.repository.BoardImgRepository;
 import com.board.repository.BoardRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,5 +40,23 @@ public class BoardService {
         }
 
         return board.getId();
+    }
+
+    public Page<Board> getBoardPage(BoardSearchDto boardSearchDto, Pageable pageable){
+        Page<Board> boardPage = boardRepository.getBoardPage(boardSearchDto,pageable);
+        return boardPage;
+    }
+    public BoardFormDto getBoardView(Long boardId){
+        List<BoardImg> boardImgList = boardImgRepository.findByBoardIdOrderByIdAsc(boardId);
+
+        List<BoardImgDto> boardImgDtoList =new ArrayList<>();
+        for(BoardImg boardImg: boardImgList){
+            BoardImgDto boardImgDto= BoardImgDto.of(boardImg);
+            boardImgDtoList.add(boardImgDto);
+        }
+        Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
+        BoardFormDto boardFormDto = BoardFormDto.of(board);
+        boardFormDto.setBoardImgDtoList(boardImgDtoList);
+        return boardFormDto;
     }
 }

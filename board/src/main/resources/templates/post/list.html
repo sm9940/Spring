@@ -15,17 +15,17 @@
                         <th scope="col">카테고리</th>
                         <th scope="col">포스트 제목</th>
                         <th scope="col">작성일</th>
-                        <th scope="col">조회수</th>
+                        <th scope="col">작성자</th>
                     </tr>
                     </thead>
                     <tbody>
                     <!-- 등록된 포스트가 있을 경우                    -->
-                    <tr>
-                        <th scope="row" ></th>
-                        <td ></td>
-                        <td  ><a></a></td>
-                        <td ></td>
-                        <td ></td>
+                    <tr th:each="board, status:${boards.getContent()}">
+                        <th scope="row" th:text="${board.id}" ></th>
+                        <td th:text="${board.category}"></td>
+                        <td  ><a th:href="'/post/view/'+${board.id} " th:text="${board.title}"></a></td>
+                        <td th:text="${board.regTime}"></td>
+                        <td th:text="${board.createdBy}"></td>
                     </tr>
 
                     </tbody>
@@ -33,50 +33,90 @@
             </div>
         </div>
         <!-- 페이징 버튼 -->
-        <div >
-            <div class="col-lg-10 ">
-                <nav aria-label="...">
-                    <ul class="pagination justify-content-center">
-                    </ul>
-                </nav>
-            </div>
-        </div>
+        <nav
+                th:with="start=${(boards.number/maxPage)*maxPage + 1}
+			                 ,end=(${(boards.totalPages == 0) ? 1 : (start + (maxPage - 1) < boards.totalPages ? start + (maxPage - 1) : boards.totalPages)})"
+                aria-label="Page navigation example">
+            <ul class="pagination d-flex justify-content-center">
+                <li class="page-item" th:classappend="${boards.first}?' disabled'">
+                    <a class="page-link"
+                       th:onclick="'javascript:page(' + ${boards.number - 1} +')'">이전</a>
+                </li>
+
+                <li class="page-item"
+                    th:each="page: ${#numbers.sequence(start, end)}"
+                    th:classappend="${boards.number eq page-1}?'active':''"> <!-- 현재 페이지 활성화 -->
+                    <!-- th:inline="text" 태그 내부에 출력되는 타임리프 변수 값을 문자로 처리  -->
+                    <a
+                            class="page-link" th:inline="text"
+                            th:onclick="'javascript:page(' + ${page - 1} +')'">[[${page}]]</a>
+                </li>
+
+                <li class="page-item" th:classappend="${boards.last}?' disabled'">
+                    <a class="page-link"
+                       th:onclick="'javascript:page(' + ${boards.number + 1} +')'">다음</a>
+                </li>
+            </ul>
+        </nav>
         <!-- 검색바 -->
-        <div class="row justify-content-center">
-            <div class="col-lg-7">
-                <form action="/list" method="post" name="searchForm">
-                    <div class="row">
-                        <div class="col-lg-3 px-1">
-                            <select name="searchKey" class="form-control">
-                                <option value="subject">제목</option>
-                                <option value="content" >내용</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-6 px-1">
-                            <input type="text" name="searchValue" class="form-control" placeholder="검색어입력" />
-                        </div>
-                        <div class="col-lg-3 px-1">
-                            <input type="button" value=" 검색 " class="btn btn-secondary" style="height: 100%;" onclick="sendIt();"/>
-                            <a href="/post/write"> <input type="button" value=" 글 쓰기" class="btn btn-secondary" style="height: 100%;" /></a>
+
+
+                <div class="row" th:object="${boardSearchDto}" style="height: 40px">
+
+                    <div class="col-lg-5" style="display: flex">
+                        <!-- 상품 등록일 -->
+                        <select class="form-control" th:field="*{searchDateType}">
+                            <option value="all">전체기간</option>
+                            <option value="1d">1일</option>
+                            <option value="1w">1주</option>
+                            <option value="1m">1개월</option>
+                            <option value="6m">6개월</option>
+                        </select>
+                        <!-- 상품판매 상태 -->
+                        <select class="form-control" th:field="*{searchCategory}">
+                            <option value="">전체</option>
+                            <option value="GAME">게임</option>
+                            <option value="SPORTS">스포츠</option>
+                            <option value="ENT">연예</option>
+                        </select>
+                        <!-- 상품명, 등록자 선택 -->
+                        <select class="form-control" th:field="*{searchBy}">
+                            <option value="title">제목</option>
+                            <option value="content">내용</option>
+                            <option value="createdBy">작성자</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <div style="display: flex">
+                            <input type="text" class="form-control" style="width:40rem;" placeholder="검색어 입력" th:field="*{searchQuery}" />
+                            <button id="searchBtn" type="submit" class="btn btn-primary mb-3">검색</button>
+                            <button  id="write" type="button" class="btn btn-primary mb-3"><a href="/post/write" style="color:white;">글쓰기</a></button>
                         </div>
                     </div>
-                </form>
-            </div>
-        </div>
+
+                </div>
+
+
     </div>
     <th:block layout:fragment="script">
+        <script type="text/javascript" th:src="@{/js/modernizr-2.6.2.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
         <script th:inline="javascript">
-            function sendIt(){
-                var f = document.searchForm;
-                var str = f.searchValue.value; //검색어
-                str = str.trim(); //글자 양쪽 공백제거
-                if(!str) {
-                        alert("검색어를 입력하세요.");
-                        f.searchValue.focus(); //input 창에 포커스
-                        return;
-                }
-                f.submit(); //form 태그 안의 내용을 전소
-            }
+            $("#searchBtn").on("click", function(e){
+                e.preventDefault(); //submit 방지
+                page(0); //검색 이후엔 검색한 페이지의 시작페이지 부터 보여준다.
+        });
+        function page(page){
+            var searchDateType =$("#searchDateType").val();
+            var searchCategory = $("#searchCategory").val();
+            var searchBy = $("#searchBy").val();
+            var searchQuery =$("#searchQuery").val();
+            location.href = "/post/list/"+page
+                                        +"?searchDateType="+searchDateType
+                                        +"&searchCategory=" + searchCategory
+                                        +"&searchBy="+ searchBy
+                                        +"&searchQuery="+searchQuery;
+        }
         </script>
     </th:block>
 </main>

@@ -9,27 +9,30 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
                     <div class="single-post">
-                        <div class="post-header mb-5 text-center">
+                        <div class="post-header mb-5 text-center" >
                             <div class="meta-cat">
                                 <a class="post-category font-extra text-color text-uppercase font-sm letter-spacing-1"
                                    href="#"></a>
                             </div>
-                            <h2  class="post-title mt-2"></h2>
+                            <h2  class="post-title mt-2" th:text="${board.title}"></h2>
 
                             <div class="post-meta">
-                                <span class="text-uppercase font-sm letter-spacing-1 mr-3" ></span>
-                                <span class="text-uppercase font-sm letter-spacing-1" ></span>
+                                <span class="text-uppercase font-sm letter-spacing-1 mr-3" th:text="'카테고리: '+${board.category}"></span>
+                                <span class="text-uppercase font-sm letter-spacing-1" th:text="'등록일 '+${board.regTime}" ></span>
                             </div>
                         </div>
                         <div class="post-body">
                             <!-- th:text => 그냥 문자로 출력, 태그도 문자로 출력-->
                             <!-- th:ㅕtext => 그냥 문자는 문자로 출력, 태그는 태그로 출력-->
-                            <div class="entry-content" ></div>
-
+                            <div class="entry-content" th:text="${board.content}"></div>
+                            <div th:each="boardImg : ${board.boardImgDtoList}" class="text-center">
+                                <img th:if="${not #strings.isEmpty(boardImg.imgUrl)}"
+                                     th:src="${boardImg.imgUrl}" class="rounded mgb-15" width="800" />
+                            </div>
                             <div class="post-tags py-4">
-                                <a href="#">#Health</a>
+                                <a href="#">#Sports</a>
                                 <a href="#">#Game</a>
-                                <a href="#">#Tour</a>
+                                <a href="#">#Entertainment</a>
                             </div>
 
 

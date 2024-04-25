@@ -15,7 +15,7 @@ public class BoardImgDto {
 
     private static ModelMapper modelMapper= new ModelMapper();
 
-    private static BoardImgDto of(BoardImg boardImg){
+    public static BoardImgDto of(BoardImg boardImg){
         return modelMapper.map(boardImg,BoardImgDto.class);
     }
 }
