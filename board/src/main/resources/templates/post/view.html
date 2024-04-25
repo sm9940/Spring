@@ -27,7 +27,7 @@
                             <div class="entry-content" th:text="${board.content}"></div>
                             <div th:each="boardImg : ${board.boardImgDtoList}" class="text-center">
                                 <img th:if="${not #strings.isEmpty(boardImg.imgUrl)}"
-                                     th:src="${boardImg.imgUrl}" class="rounded mgb-15" width="800" />
+                                     th:src="${boardImg.imgUrl}" th:alt="${board.title}"class="rounded mgb-15" width="800" />
                             </div>
                             <div class="post-tags py-4">
                                 <a href="#">#Sports</a>
