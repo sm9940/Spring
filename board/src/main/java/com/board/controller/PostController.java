@@ -19,7 +19,7 @@ import java.util.List;
 public class PostController {
     private final BoardService boardService;
     @GetMapping(value = "/post/list")
-    public String list(){
+    public String list(Model model){
         return "/post/list";
     }
     @GetMapping(value = "/post/view")
