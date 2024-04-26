@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class Comment {
+public class Comment extends BaseEntity{
     @Id
     @Column(name="comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
-    private LocalDateTime regDate;
+
 
     @ManyToOne
     @JoinColumn(name="board_id")
@@ -27,5 +27,6 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name="member_id")
     private Member member;
+
 
 }

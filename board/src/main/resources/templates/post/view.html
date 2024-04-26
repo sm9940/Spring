@@ -3,6 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}"
 >
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
 <main layout:fragment="content" class="main">
     <section class="single-block-wrapper section-padding">
         <div class="container">
@@ -45,24 +49,50 @@
                         </div>
                     </div>
                     <form class="comment-form mb-5 gray-bg p-5" id="comment-form">
-                        <h3 class="mb-4 text-center">댓글 남기기</h3>
                         <div class="row">
-                            <div class="col-lg-12">
-                                <textarea class="form-control mb-3" name="comment" id="comment" cols="30" rows="5"
-                                          placeholder="Comment"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input class="form-control" type="text" name="name" id="name" placeholder="Name:">
+                            <div class="comment-area my-5">
+                                <h3 class="mb-4 text-center">2개의 댓글</h3>
+                                <div class="comment-area-box media">
+                                    <div class="media-body ml-4">
+                                        <h4 class="mb-0">Micle harison </h4>
+                                        <span class="date-comm font-sm text-capitalize text-color"><i
+                                                class="ti-time mr-2"></i>June 7, 2019 </span>
+
+                                        <div class="comment-content mt-3">
+                                            <p>Lorem ipsum dolor sit amet, usu ut perfecto postulant deterruisset, libris causae
+                                                volutpat at est, ius id modus laoreet urbanitas. Mel ei delenit dolores.</p>
+                                        </div>
+                                        <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
+                                            <a href="#" class="text-underline ">Reply</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input class="form-control" type="text" name="mail" id="mail" placeholder="Email:">
+
+                                <div class="comment-area-box media mt-5">
+                                    <img alt="" src="images/blog-user-3.jpg" class="mt-2 img-fluid float-left mr-3">
+
+                                    <div class="media-body ml-4">
+                                        <h4 class="mb-0 ">John Doe </h4>
+                                        <span class="date-comm font-sm text-capitalize text-color"><i
+                                                class="ti-time mr-2"></i>June 7, 2019 </span>
+
+                                        <div class="comment-content mt-3">
+                                            <p>Some consultants are employed indirectly by the client via a consultancy staffing
+                                                company. </p>
+                                        </div>
+                                        <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
+                                            <a href="#" class="text-underline">Reply</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                <h3 class="mb-4 text-center">댓글 남기기</h3>
 
+                    <div class="col-lg-12">
+                                <textarea class="form-control mb-3" name="comment" id="comment" cols="30" rows="5"
+                                          placeholder="Comment"></textarea>
+                    </div>
                         <input class="btn btn-primary" type="submit" name="submit-contact" id="submit_contact"
                                value="등록">
                     </form>
@@ -72,5 +102,56 @@
         </div>
     </section>
 </main>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+
+
+        function order() {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/post/view";
+
+            //controller(서버)에 전달할 데이터
+            var paramData = {
+                    itemId : $("#itemId").val(), //item의 id
+                    count: $("#count").val() //수량
+            }
+
+            //★전달하기 전에 데이터를 반드시 JSON -> 문자열로 만들어야 한다.
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url : url, //request URL
+                type : "POST", //전송방식
+                contentType : "application/json",
+                data : param, //서버에 전송할 데이터
+                beforeSend : function(xhr) {
+                    //데이터를 전송하기전에 헤더에 csrf 값을 설정
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache : false,
+                success : function(result, status) {
+                    alert("댓글 작성이 완료되었습니다." + result);
+                    //location.href = '/';
+                },
+                error : function(jqXHR, status, error) {
+                    if (jqXHR.status == '401') {
+                        alert('로그인 후 이용해주세요.');
+                        location.href = '/members/login';
+                    } else {
+                        //에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다)
+                        alert(jqXHR.responseText);
+                    }
+                }
+            });
+
+        }
+
+
+    </script>
+</th:block>
 
 </html>

@@ -2,6 +2,7 @@ package com.board.dto;
 
 import com.board.constant.Category;
 import com.board.entity.Board;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;

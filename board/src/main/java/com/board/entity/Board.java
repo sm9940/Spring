@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name="board")
@@ -33,9 +34,13 @@ public class Board extends BaseEntity {
     @JoinColumn(name="member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "board",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OrderBy("id asc")
+    private List<Comment> comments;
     public  void updateBoard(BoardFormDto itemFormDto){
         this.title = itemFormDto.getTitle();
         this.content =itemFormDto.getContent();
         this.category=itemFormDto.getCategory();
     }
+
 }
