@@ -9,15 +9,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,9 +36,10 @@ public class PostController {
         return "/post/list";
     }
     @GetMapping(value = "/post/view/{boardId}")
-    public String viewDetail(Model model,@PathVariable("boardId")Long boardId)
+    public String viewDetail(Model model,@PathVariable("boardId")Long boardId,Principal principal)
     { BoardFormDto boardFormDto=boardService.getBoardView(boardId);
         model.addAttribute("board",boardFormDto);
+        model.addAttribute("memberId",principal.getName());
         return "post/view";
     }
     @GetMapping(value = "/post/write")
@@ -95,5 +96,14 @@ public class PostController {
             return "post/rewrite";
         }
         return "redirect:/";
+    }
+    @DeleteMapping("/post/view/{boardId}/delete")
+    public @ResponseBody ResponseEntity deletePost(@PathVariable("boardId")Long boardId, Principal principal){
+        if(!boardService.validatePost(boardId,principal.getName())){
+            return new ResponseEntity<String>("권한이 없습니다.",HttpStatus.FORBIDDEN);
+        }
+
+        boardService.deletePost(boardId);
+        return new ResponseEntity<Long>(boardId,HttpStatus.OK);
     }
 }

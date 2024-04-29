@@ -24,6 +24,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
+    public final ListPath<BoardImg, QBoardImg> boardImages = this.<BoardImg, QBoardImg>createList("boardImages", BoardImg.class, QBoardImg.class, PathInits.DIRECT2);
+
     public final EnumPath<com.board.constant.Category> category = createEnum("category", com.board.constant.Category.class);
 
     public final ListPath<Comment, QComment> comments = this.<Comment, QComment>createList("comments", Comment.class, QComment.class, PathInits.DIRECT2);

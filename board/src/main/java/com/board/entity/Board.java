@@ -34,7 +34,10 @@ public class Board extends BaseEntity {
     @JoinColumn(name="member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardImg> boardImages;
+
+    @OneToMany(mappedBy = "board",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @OrderBy("id asc")
     private List<Comment> comments;
     public  void updateBoard(BoardFormDto itemFormDto){

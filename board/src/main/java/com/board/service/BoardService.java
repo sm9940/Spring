@@ -5,8 +5,10 @@ import com.board.dto.BoardImgDto;
 import com.board.dto.BoardSearchDto;
 import com.board.entity.Board;
 import com.board.entity.BoardImg;
+import com.board.entity.Member;
 import com.board.repository.BoardImgRepository;
 import com.board.repository.BoardRepository;
+import com.board.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardImgService boardImgService;
     private final BoardImgRepository boardImgRepository;
-
+    private final MemberRepository memberRepository;
     public Long savePost(BoardFormDto boardFormDto, List<MultipartFile>boardImgFileList) throws Exception{
         Board board= boardFormDto.insertPost();
         boardRepository.save(board);
@@ -71,5 +74,21 @@ public class BoardService {
             boardImgService.updateBoardImg(boardImgIds.get(i),boardImgFileList.get(i));
         }
         return board.getId();
+    }
+
+    public boolean validatePost(Long boardId ,String email){
+        Member curMember = memberRepository.findByEmail(email);
+        Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
+        String savedMember = board.getCreatedBy();
+
+        if(!StringUtils.equals(savedMember,curMember.getEmail())) {return false;}
+
+        return true;
+    }
+
+    public void deletePost(Long boardId){
+        Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
+
+        boardRepository.delete(board);
     }
 }

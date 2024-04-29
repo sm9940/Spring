@@ -21,10 +21,11 @@ public class BoardFormDto {
     private String title;
     @NotBlank(message = "내용을 입력해주세요")
     private String content;
+    private String createdBy;
     private Category category;
     private LocalDateTime regTime;
     private List<BoardImgDto> boardImgDtoList = new ArrayList<>();
-
+    private Long memberId;
 
     private List<Long> BoardImgIds = new ArrayList<>();
     private static ModelMapper modelMapper=new ModelMapper();
