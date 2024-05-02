@@ -15,7 +15,7 @@ public class DoctorFormDto {
     private Long id;
 
     private String doctorNm;
-    private String doctorDetail;
+    private String a;
     private Major major;
 
     private List<DoctorImgDto> doctorImgDtoList = new ArrayList<>();
