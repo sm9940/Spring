@@ -27,22 +27,33 @@
             </div>
         </div>
     </nav>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ftco-navbar-light" id="ftco-navbar">
-        <div class="container d-flex align-items-center">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="oi oi-menu"></span> Menu
-            </button>
-            <p class="button-custom order-lg-last mb-0"><a href="appointment.html" class="btn btn-secondary py-2 px-3">예약</a></p>
-            <div class="collapse navbar-collapse" id="ftco-nav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active"><a href="index.html" class="nav-link pl-0">홈</a></li>
-                    <li class="nav-item"><a href="about.html" class="nav-link">관리자 메뉴</a></li>
-                    <li class="nav-item"><a href="doctor.html" class="nav-link">의료진</a></li>
-                    <li class="nav-item"><a href="blog.html" class="nav-link">마이페이지</a></li>
-                    <li class="nav-item"><a href="/members/login" class="nav-link">로그인</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div class="main-nav d-none d-lg-block">
+        <nav class="site-navigation text-left text-center" role="navigation">
+            <ul class="site-menu js-clone-nav d-none d-lg-block">
+                <li class="active"><a href="/">홈</a></li>
+                <!-- ROLE이 ADMIN인 경우-->
+                <li class="has-children " sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                    <a>관리자 메뉴</a>
+                    <ul class="dropdown">
+                        <li><a href="/admin/item/new">의료진 등록</a></li>
+                        <li><a href="/admin/items">의료진 관리</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="/item/shop">의료진</a></li>
+
+                <!-- 로그인 한 경우-->
+                <li><a href="/orders"sec:authorize="isAuthenticated()">마이페이지</a></li>
+                <!-- 로그인 하지 않은경우-->
+                <li><a href="/members/login" sec:authorize="isAnonymous()">로그인</a></li>
+                <li><a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
+                <li class="site-navigation text-right " role="navigation" style="margin-left:4rem">
+                    <p class="button-custom order-lg-last mb-0"><a href="appointment.html" class="btn btn-secondary py-2 px-3">예  약</a></p>
+                </li>
+            </ul>
+        </nav>
+
+
+    </div>
 </div>
 </html>

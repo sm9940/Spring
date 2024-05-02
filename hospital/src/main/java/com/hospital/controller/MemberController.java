@@ -4,6 +4,7 @@ package com.hospital.controller;
 //import com.hospital.entity.Member;
 //import com.hospital.service.MemberService;
 import com.hospital.dto.MemberFormDto;
+import com.hospital.entity.Member;
 import com.hospital.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
-//    private final PasswordEncoder passwordEncoder;
+   private final PasswordEncoder passwordEncoder;
     private final MemberService memberService;
     //문의하기
     @GetMapping(value = "/members/qa")
@@ -35,25 +36,25 @@ public class MemberController {
 
     }
 
-//    @PostMapping(value = "/members/new")
-//    public String memberForm(@Valid MemberFormDto memberFormDto,
-//                             BindingResult bindingResult,Model model){
-//        // @Valid : 유효성을 검증하려는 객체 앞에 붙인다.
-//        //BindingResult : 유효성 검증 후의 결과가 들어있다.
-//        if (bindingResult.hasErrors()) return  "member/memberForm";
-//
-//        //유효성 검사를 통과했다면 회원가입 징행
-//        try {
-//            //memberFormDto -> Entity 객체로 전환
-//            Member member = Member.createMember(memberFormDto,passwordEncoder);
-//            memberService.saveMember(member);
-//        } catch (IllegalStateException e){
-//            //회원가입이 이미 되어있다면
-//            model.addAttribute("errorMessage",e.getMessage());
-//            return "member/memberForm";
-//        }
-//        return "redirect:/"; //회원가입 완료후 메인페이지로 이동
-//    }
+    @PostMapping(value = "/members/new")
+    public String memberForm(@Valid MemberFormDto memberFormDto,
+                             BindingResult bindingResult,Model model){
+        // @Valid : 유효성을 검증하려는 객체 앞에 붙인다.
+        //BindingResult : 유효성 검증 후의 결과가 들어있다.
+        if (bindingResult.hasErrors()) return  "member/memberForm";
+
+        //유효성 검사를 통과했다면 회원가입 징행
+        try {
+            //memberFormDto -> Entity 객체로 전환
+            Member member = Member.createMember(memberFormDto,passwordEncoder);
+            memberService.saveMember(member);
+        } catch (IllegalStateException e){
+            //회원가입이 이미 되어있다면
+            model.addAttribute("errorMessage",e.getMessage());
+            return "member/memberForm";
+        }
+        return "redirect:/"; //회원가입 완료후 메인페이지로 이동
+    }
     //로그인 실패시
     @GetMapping(value = "/members/login/error")
     public String loginError(Model model){
