@@ -25,7 +25,7 @@ public class QDoctor extends EntityPathBase<Doctor> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Major> major = createNumber("major", Major.class);
+    public final EnumPath<com.hospital.constant.Major> major = createEnum("major", com.hospital.constant.Major.class);
 
     public QDoctor(String variable) {
         super(Doctor.class, forVariable(variable));

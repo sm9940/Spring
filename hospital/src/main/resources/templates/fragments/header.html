@@ -16,7 +16,7 @@
                         </div>
                         <div class="col-md pr-4 d-flex topper align-items-center">
                             <div class="icon bg-white mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
-                            <span class="text">Email: youremail@email.com</span>
+
                         </div>
                         <div class="col-md pr-4 d-flex topper align-items-center">
                             <div class="icon bg-white mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
@@ -35,8 +35,8 @@
                 <li class="has-children " sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
                     <a>관리자 메뉴</a>
                     <ul class="dropdown">
-                        <li><a href="/admin/item/new">의료진 등록</a></li>
-                        <li><a href="/admin/items">의료진 관리</a></li>
+                        <li><a href="/admin/doctor/new">의료진 등록</a></li>
+                        <li><a href="/admin/doctors">의료진 관리</a></li>
                     </ul>
                 </li>
 
