@@ -23,4 +23,10 @@ public class DoctorImg {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
+
+    public void updateDoctorImg(String oriImgName, String imgName, String imgUrl) {
+    this.oriImgName=oriImgName;
+    this.imgName = imgName;
+    this.imgUrl = imgUrl;
+    }
 }
