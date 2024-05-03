@@ -16,10 +16,11 @@ public class AvailableTime {
     @Id
     @Column(name = "available_time_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-    private Time availableTime;
+    private Long id;
+    private Time startTime;
+    private Time endTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "available_day_id")
     private AvailableDay availableDay;
 }

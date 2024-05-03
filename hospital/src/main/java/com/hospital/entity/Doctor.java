@@ -6,12 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "doctor")
 @Getter
 @Setter
 @ToString
-public class Doctor {
+public class Doctor extends BaseEntity{
     @Id
     @Column(name = "doctor_id")
     private Long id;
@@ -22,4 +25,12 @@ public class Doctor {
     @Lob
     @Column(nullable = false, columnDefinition = "longtext")
     private String doctorDetail;
+
+    @OneToMany(mappedBy = "doctor",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<AvailableDay> availableDays =new ArrayList<>();
+
+    public void addAvailableDay(AvailableDay availableDay){
+        availableDays.add(availableDay);
+        availableDay.setDoctor(this);
+    }
 }

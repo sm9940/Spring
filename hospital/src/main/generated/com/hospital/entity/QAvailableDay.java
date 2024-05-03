@@ -22,6 +22,8 @@ public class QAvailableDay extends EntityPathBase<AvailableDay> {
 
     public static final QAvailableDay availableDay = new QAvailableDay("availableDay");
 
+    public final ListPath<AvailableTime, QAvailableTime> availableTimes = this.<AvailableTime, QAvailableTime>createList("availableTimes", AvailableTime.class, QAvailableTime.class, PathInits.DIRECT2);
+
     public final EnumPath<com.hospital.constant.Day> day = createEnum("day", com.hospital.constant.Day.class);
 
     public final QDoctor doctor;

@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -19,6 +20,13 @@ public class QDoctor extends EntityPathBase<Doctor> {
 
     public static final QDoctor doctor = new QDoctor("doctor");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
+    public final ListPath<AvailableDay, QAvailableDay> availableDays = this.<AvailableDay, QAvailableDay>createList("availableDays", AvailableDay.class, QAvailableDay.class, PathInits.DIRECT2);
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
     public final StringPath doctorDetail = createString("doctorDetail");
 
     public final StringPath doctorNm = createString("doctorNm");
@@ -26,6 +34,9 @@ public class QDoctor extends EntityPathBase<Doctor> {
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final EnumPath<com.hospital.constant.Major> major = createEnum("major", com.hospital.constant.Major.class);
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
 
     public QDoctor(String variable) {
         super(Doctor.class, forVariable(variable));

@@ -22,6 +22,11 @@ public class QDoctorImg extends EntityPathBase<DoctorImg> {
 
     public static final QDoctorImg doctorImg = new QDoctorImg("doctorImg");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
     public final QDoctor doctor;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -29,6 +34,9 @@ public class QDoctorImg extends EntityPathBase<DoctorImg> {
     public final StringPath imgName = createString("imgName");
 
     public final StringPath imgUrl = createString("imgUrl");
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
 
     public final StringPath oriImgName = createString("oriImgName");
 

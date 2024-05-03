@@ -20,13 +20,15 @@ public class QAvailableTime extends EntityPathBase<AvailableTime> {
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QAvailableTime availableTime1 = new QAvailableTime("availableTime1");
+    public static final QAvailableTime availableTime = new QAvailableTime("availableTime");
 
     public final QAvailableDay availableDay;
 
-    public final TimePath<java.sql.Time> availableTime = createTime("availableTime", java.sql.Time.class);
+    public final TimePath<java.sql.Time> endTime = createTime("endTime", java.sql.Time.class);
 
-    public final NumberPath<Long> Id = createNumber("Id", Long.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final TimePath<java.sql.Time> startTime = createTime("startTime", java.sql.Time.class);
 
     public QAvailableTime(String variable) {
         this(AvailableTime.class, forVariable(variable), INITS);

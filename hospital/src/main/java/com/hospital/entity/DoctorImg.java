@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class DoctorImg {
+public class DoctorImg extends BaseEntity{
     @Id
     @Column(name="doctor_img_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
