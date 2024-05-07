@@ -5,6 +5,7 @@ import com.hospital.constant.Major;
 import com.hospital.entity.AvailableDay;
 import com.hospital.entity.AvailableTime;
 import com.hospital.entity.Doctor;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -17,7 +18,9 @@ import java.util.List;
 @Setter
 public class DoctorFormDto {
     private Long id;
+    @NotBlank(message = "교수명을 입력해주세요")
     private String doctorNm;
+    @NotBlank(message = "교수 진료내용을 입력해주세요")
     private String doctorDetail;
     private Time startTime;
     private Time endTime;

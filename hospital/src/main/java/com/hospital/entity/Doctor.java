@@ -17,6 +17,7 @@ import java.util.List;
 public class Doctor extends BaseEntity{
     @Id
     @Column(name = "doctor_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String doctorNm;
@@ -33,4 +34,11 @@ public class Doctor extends BaseEntity{
         availableDays.add(availableDay);
         availableDay.setDoctor(this);
     }
+
+    public void removeAvailableDay(AvailableDay availableDay){
+        availableDays.remove(availableDay);
+        availableDay.setDoctor(null);
+    }
+
+
 }

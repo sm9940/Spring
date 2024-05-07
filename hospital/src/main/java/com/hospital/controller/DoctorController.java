@@ -27,19 +27,26 @@ public class DoctorController {
     @PostMapping(value = "/admin/doctor/new")
     public String doctorNew(@Valid DoctorFormDto doctorFormDto, BindingResult bindingResult
     , Model model, @RequestParam("doctorImgFile")List<MultipartFile> doctorImgFileList){
-        if(bindingResult.hasErrors()) return "doctor/doctorForm";
+//        if(bindingResult.hasErrors()) return "doctor/doctorForm";
+//
+//        if(doctorImgFileList.get(0).isEmpty()){
+//            model.addAttribute("errorMessage","대표 이미지를 넣어주세요");
+//            return "doctor/doctorForm";
+//        }
 
-        if(doctorImgFileList.get(0).isEmpty()){
-            model.addAttribute("errorMessage","대표 이미지를 넣어주세요");
-            return "doctor/doctorForm";
-        }
         try {
             doctorService.saveDoctor(doctorFormDto,doctorImgFileList);
+            return "redirect:/";
         } catch (Exception e){
             e.printStackTrace();
             model.addAttribute("errorMessage","의료진 등록 도중 에러가 발생했습니다.");
             return "doctor/doctorForm";
         }
-        return "redirect:/";
+
         }
+    @GetMapping(value = "/admin/doctors")
+    public String DoctorList(){
+
+        return "doctor/doctorList";
+    }
 }

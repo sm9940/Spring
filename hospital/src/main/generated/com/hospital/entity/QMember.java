@@ -37,7 +37,13 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath password = createString("password");
 
+    //inherited
+    public final DatePath<java.time.LocalDate> regDate = _super.regDate;
+
     public final EnumPath<com.hospital.constant.Role> role = createEnum("role", com.hospital.constant.Role.class);
+
+    //inherited
+    public final DatePath<java.time.LocalDate> updateDate = _super.updateDate;
 
     public QMember(String variable) {
         super(Member.class, forVariable(variable));

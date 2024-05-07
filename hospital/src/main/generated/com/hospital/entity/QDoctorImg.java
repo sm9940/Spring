@@ -40,7 +40,13 @@ public class QDoctorImg extends EntityPathBase<DoctorImg> {
 
     public final StringPath oriImgName = createString("oriImgName");
 
+    //inherited
+    public final DatePath<java.time.LocalDate> regDate = _super.regDate;
+
     public final StringPath repImgYn = createString("repImgYn");
+
+    //inherited
+    public final DatePath<java.time.LocalDate> updateDate = _super.updateDate;
 
     public QDoctorImg(String variable) {
         this(DoctorImg.class, forVariable(variable), INITS);

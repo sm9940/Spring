@@ -38,6 +38,12 @@ public class QDoctor extends EntityPathBase<Doctor> {
     //inherited
     public final StringPath modifiedBy = _super.modifiedBy;
 
+    //inherited
+    public final DatePath<java.time.LocalDate> regDate = _super.regDate;
+
+    //inherited
+    public final DatePath<java.time.LocalDate> updateDate = _super.updateDate;
+
     public QDoctor(String variable) {
         super(Doctor.class, forVariable(variable));
     }

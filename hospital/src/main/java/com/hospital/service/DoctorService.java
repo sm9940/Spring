@@ -8,7 +8,6 @@ import com.hospital.entity.AvailableDay;
 import com.hospital.entity.AvailableTime;
 import com.hospital.entity.Doctor;
 import com.hospital.entity.DoctorImg;
-import com.hospital.repository.AvailableDayRepository;
 import com.hospital.repository.DoctorImgRepository;
 import com.hospital.repository.DoctorRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,23 +26,17 @@ public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final DoctorImgService doctorImgService;
     private final DoctorImgRepository doctorImgRepository;
-    private final AvailableDayRepository availableDayRepository;
-    public Long saveDoctor(DoctorFormDto doctorFormDto, List<MultipartFile> doctorImgFileList) throws Exception{
+    private final AvailableDayService availableDayService; // AvailableDayService 주입
+    private final AvailableTimeService availableTimeService; // AvailableTimeService 주입
+
+    public Long saveDoctor(DoctorFormDto doctorFormDto, List<MultipartFile> doctorImgFileList) throws Exception {
         Doctor doctor = doctorFormDto.createDoctor();
         doctorRepository.save(doctor);
-        // AvailableDayDto 정보를 AvailableDay 엔티티로 매핑하여 연결
-        List<AvailableDayDto> availableDayDtoList = doctorFormDto.getAvailableDayDtoList();
-        for (AvailableDayDto availableDayDto : availableDayDtoList) {
-            AvailableDay availableDay = availableDayDto.createAvailableDay();
-            doctor.addAvailableDay(availableDay);
 
-            // AvailableTimeDto 정보를 AvailableTime 엔티티로 매핑하여 연결
-            List<AvailableTimeDto> availableTimeDtoList = availableDayDto.getAvailableTimeDtoList();
-            for (AvailableTimeDto availableTimeDto : availableTimeDtoList) {
-                AvailableTime availableTime = availableTimeDto.createAvailableTime();
-                availableDay.addAvailableTime(availableTime);
-            }
-        }
+        // AvailableDay 및 AvailableTime 저장
+        availableDayService.saveAvailableDays(doctorFormDto.getAvailableDayDtoList());
+
+        // DoctorImg 저장
         for(int i = 0 ; i<doctorImgFileList.size(); i++){
             DoctorImg doctorImg = new DoctorImg();
             doctorImg.setDoctor(doctor);
@@ -59,12 +52,12 @@ public class DoctorService {
         return doctor.getId();
     }
 
-    public DoctorFormDto getDoctorDtl(Long doctorId){
+    public DoctorFormDto getDoctorDtl(Long doctorId) {
         List<DoctorImg> doctorImgList = doctorImgRepository.findByDoctorIdOrderByIdAsc(doctorId);
 
         List<DoctorImgDto> doctorImgDtoList = new ArrayList<>();
 
-        for (DoctorImg doctorImg: doctorImgList){
+        for (DoctorImg doctorImg : doctorImgList) {
             DoctorImgDto doctorImgDto = DoctorImgDto.of(doctorImg);
             doctorImgDtoList.add(doctorImgDto);
         }

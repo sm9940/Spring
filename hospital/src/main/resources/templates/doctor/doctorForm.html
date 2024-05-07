@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout1}">
-<th:block layout:fragment="css">
+<head>
+    <title>의료진 등록</title>
     <style>
         .fieldError {
-           color: #bd2130;
+            color: #bd2130;
         }
     </style>
-</th:block>
-
+</head>
+<body>
 <div layout:fragment="content">
     <div class="bg-light py-3">
         <div class="container">
@@ -32,66 +33,42 @@
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <select class="form-control" th:field="*{major}">
-                                        <option class="form-control" value="NEUROLOGY">신경외과</option>
-                                        <option class="form-control" value="SURGICAL">외과</option>
-                                        <option class="form-control" value="OPHTALMOLOGY">안과</option>
-                                        <option class="form-control" value="DENTAL">치과</option>
-                                        <option class="form-control" value="CARDIOLOGY">내과</option>
+                                        <option value="NEUROLOGY">신경외과</option>
+                                        <option value="SURGICAL">외과</option>
+                                        <option value="OPHTALMOLOGY">안과</option>
+                                        <option value="DENTAL">치과</option>
+                                        <option value="CARDIOLOGY">내과</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label th:for="doctorNm" class="text-black" >교수명</label>
+                                    <label th:for="doctorNm" class="text-black">교수명</label>
                                     <input type="text" class="form-control" placeholder="교수명 입력" th:field="*{doctorNm}"/>
                                     <p th:if="${#fields.hasErrors('doctorNm')}" th:errors="*{doctorNm}" class="fieldError">Incorrect Data</p>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label th:for="day" class="text-black" >진료 가능 요일</label>
+                                    <label th:for="availableDayDtoList" class="text-black">진료 가능 요일</label>
                                     <br>
-                                    <label class="form-check-label" style="margin-right:20px;">
-                                        월요일 &nbsp;&nbsp;
+                                    <label th:each="day : ${T(com.hospital.constant.Day).values()}" class="form-check-label" style="margin-right:20px;">
+                                        <input class="form-check-input" type="checkbox" th:value="${day}" th:field="*{availableDayDtoList}" th:id="${'day-' + day}" />
+                                        <span th:text="${day}"></span>
                                     </label>
-                                    <input class="form-check-input" type="checkbox" th:value="MON" th:field="*{availableDayDtoList}">
-                                    <br>
-                                    <label class="form-check-label" style="margin-right:20px;">
-                                       화요일 &nbsp;&nbsp;
-                                    </label>
-                                    <input class="form-check-input" type="checkbox" th:value="TUE" th:field="*{availableDayDtoList}">
-                                    <br>
-                                    <label class="form-check-label" style="margin-right:20px;">
-                                        수요일 &nbsp;&nbsp;
-                                    </label>
-                                    <input class="form-check-input" type="checkbox" th:value="WED" th:field="*{availableDayDtoList}">
-                                    <br>
-                                    <label class="form-check-label"style="margin-right:20px;" >
-                                       목요일 &nbsp;&nbsp;
-                                    </label>
-                                    <input class="form-check-input" type="checkbox" th:value="THU" th:field="*{availableDayDtoList}">
-                                    <br>
-                                    <label class="form-check-label" style="margin-right:20px;">
-                                        금요일 &nbsp;&nbsp;
-                                    </label>
-                                    <input class="form-check-input" type="checkbox" th:value="FRI" th:field="*{availableDayDtoList}">
-                                    <br>
-                                    <label class="form-check-label" style="margin-right:20px;">
-                                        토요일 &nbsp;&nbsp;
-                                    </label>
-                                    <input class="form-check-input" type="checkbox" th:value="SAT" th:field="*{availableDayDtoList}">
-                                    <p th:if="${#fields.hasErrors('doctorNm')}" th:errors="*{doctorNm}" class="fieldError">Incorrect Data</p>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label  class="text-black" >진료 가능 시간</label>
+                                    <label class="text-black">진료 가능 시간</label>
                                     <br>
                                     <label th:for="startTime">시작시간</label>
-                                    <select class="form-control" th:field="*{startTime}" ></select>
-                                    <label  th:for="endTime">종료시간:</label>
-                                    <select class="form-control" th:field="*{endTime}"></select>
+                                    <select class="form-control" th:field="*{startTime}" th:value="*{startTime}"></select>
+                                    <label th:for="endTime">종료시간:</label>
+                                    <select class="form-control" th:field="*{endTime}" th:value="*{endTime}"></select>
                                     <br>
                                 </div>
                             </div>
@@ -99,7 +76,7 @@
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label th:for="doctorDetail" class="text-black">교수 진료내용</label>
-                                    <textarea rows="10" class="form-control" placeholder="교수 진료내용" th:field="*{doctorDetail}" ></textarea>
+                                    <textarea rows="10" class="form-control" placeholder="교수 진료내용" th:field="*{doctorDetail}"></textarea>
                                     <p th:if="${#fields.hasErrors('doctorDetail')}" th:errors="*{doctorDetail}" class="fieldError">Incorrect Data</p>
                                 </div>
                             </div>
@@ -125,56 +102,47 @@
         </div>
     </div>
 </div>
-
 <th:block layout:fragment="script">
-    <script th:inline="javascript">
-        var errorMessage = [[${errorMessage}]];
+<script th:inline="javascript">
+    var errorMessage = [[${errorMessage}]];
 
-       if(errorMessage != null) alert(errorMessage);
+    if(errorMessage != null) alert(errorMessage);
 
+ var selectedStartTime = '';
+ var selectedEndTime = '';
 
+ function beforeSubmit() {
+     const f = document.doctorForm;
+     alert("선택된 시작 시간: " + selectedStartTime + "\n선택된 종료 시간: " + selectedEndTime);
+     f.submit();
+ }
 
-       //상품 등록버튼을 누르면 천단위 콤마 제거 후 전송
-        function beforeSubmit() {
-        const f = document.doctorForm;
-        alert("선택된 시작 시간: " + selectedStartTime + "\n선택된 종료 시간: " + selectedEndTime);
-        f.submit();
-        }
-  // 30분 간격으로 시간을 설정하는 함수
-  function createSelectOptions(select) {
-    for (var hour = 8; hour < 18; hour++) {
-      for (var minute = 0; minute < 60; minute += 30) {
-        var option = document.createElement("option");
-        var timeString = (hour < 10 ? "0" + hour : hour) + ":" + (minute === 0 ? "00" : minute);
-        option.text = timeString;
-        option.value = timeString;
-        select.appendChild(option);
-      }
-    }
-  }
+ function createSelectOptions(select) {
+     for (var hour = 8; hour < 18; hour++) {
+         for (var minute = 0; minute < 60; minute += 30) {
+             var option = document.createElement("option");
+             var timeString = (hour < 10 ? "0" + hour : hour) + ":" + (minute === 0 ? "00" : minute);
+             option.text = timeString;
+             option.value = timeString;
+             select.appendChild(option);
+         }
+     }
+ }
 
-  // 시작 시간과 종료 시간을 선택할 요소들
-  var startTimeSelect = document.getElementById("startTime");
-  var endTimeSelect = document.getElementById("endTime");
+ var startTimeSelect = document.getElementById("startTime");
+ var endTimeSelect = document.getElementById("endTime");
 
-  // 시작 시간과 종료 시간을 생성
-  createSelectOptions(startTimeSelect);
-  createSelectOptions(endTimeSelect);
+ createSelectOptions(startTimeSelect);
+ createSelectOptions(endTimeSelect);
 
-  // 사용자가 선택한 시작 시간과 종료 시간
-  var selectedStartTime = startTimeSelect.value;
-  var selectedEndTime = endTimeSelect.value;
+ startTimeSelect.addEventListener("change", function() {
+     selectedStartTime = this.value;
+ });
 
-  // 사용자가 시작 시간을 선택할 때마다 호출되는 함수
-  startTimeSelect.addEventListener("change", function() {
-    selectedStartTime = this.value;
-  });
-
-  // 사용자가 종료 시간을 선택할 때마다 호출되는 함수
-  endTimeSelect.addEventListener("change", function() {
-    selectedEndTime = this.value;
-  });
-
-    </script>
+ endTimeSelect.addEventListener("change", function() {
+     selectedEndTime = this.value;
+ });
+</script>
 </th:block>
+</body>
 </html>
