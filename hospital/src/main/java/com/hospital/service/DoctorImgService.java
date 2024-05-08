@@ -2,6 +2,7 @@ package com.hospital.service;
 
 import com.hospital.entity.DoctorImg;
 import com.hospital.repository.DoctorImgRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -19,19 +20,41 @@ public class DoctorImgService {
     private final DoctorImgRepository doctorImgRepository;
     private final FileService fileService;
 
-    public void saveDoctorImg(DoctorImg doctorImg, MultipartFile doctorImgFile) throws Exception{
+    public void saveDoctorImg(DoctorImg doctorImg, MultipartFile doctorImgFile) throws Exception {
         String oriImgName = doctorImgFile.getOriginalFilename();
         String imgName = "";
         String imgUrl = "";
 
-        if(!StringUtils.isEmpty(oriImgName)){
+        if (!StringUtils.isEmpty(oriImgName)) {
             imgName = fileService.uploadFile(doctorImgLocation,
-                    oriImgName,doctorImgFile.getBytes());
+                    oriImgName, doctorImgFile.getBytes());
 
-            imgUrl = "/images/img/"+imgName;
+            imgUrl = "/images/doctor/" + imgName;
         }
 
-        doctorImg.updateDoctorImg(oriImgName,imgName,imgUrl);
+        doctorImg.updateDoctorImg(oriImgName, imgName, imgUrl);
         doctorImgRepository.save(doctorImg);
+    }
+
+    public void updateDoctorImg(Long doctorImgId, MultipartFile doctorImgFile) throws Exception {
+        if (!doctorImgFile.isEmpty()) { //첨부한 이미지 파일이 있으면
+            //1. 서버에 있는 이미지를 가지고 와서 수정해준다.
+            DoctorImg saveDoctorImg = doctorImgRepository.findById(doctorImgId).orElseThrow(EntityNotFoundException::new);
+
+            //기존 이미지 파일을 c:/shop/Doctor 폴더에서 삭제
+            if (!StringUtils.isEmpty(saveDoctorImg.getImgName())) {
+                fileService.deleteFile(doctorImgLocation + "/" + saveDoctorImg.getImgName());
+            }
+
+            //수정된 이미지 파일을 경로에 업로드
+            String oriImgName = doctorImgFile.getOriginalFilename();
+            String imgName = fileService.uploadFile(doctorImgLocation, oriImgName, doctorImgFile.getBytes());
+            String imgUrl = "/images/doctor/" + imgName;
+
+            //2. Doctor_img 테이블에 저장된 데이터를 수정해준다.
+            //update (JPA가 자동감지)
+            saveDoctorImg.updateDoctorImg(oriImgName, imgName, imgUrl);
+
+        }
     }
 }

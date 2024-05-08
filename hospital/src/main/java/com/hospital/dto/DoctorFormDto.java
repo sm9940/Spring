@@ -36,22 +36,6 @@ public class DoctorFormDto {
 
     public Doctor createDoctor(){
         Doctor doctor = modelMapper.map(this, Doctor.class);
-
-        // availableDayDtoList에서 AvailableDay 엔티티로의 매핑
-        List<AvailableDay> availableDays = new ArrayList<>();
-        for (AvailableDayDto availableDayDto : this.availableDayDtoList) {
-            availableDays.add(modelMapper.map(availableDayDto, AvailableDay.class));
-
-            // AvailableDay에 속한 AvailableTimeDto 리스트를 가져와서 AvailableTime 엔티티로 매핑
-            List<AvailableTime> availableTimes = new ArrayList<>();
-            for (AvailableTimeDto availableTimeDto : availableDayDto.getAvailableTimeDtoList()) {
-                availableTimes.add(modelMapper.map(availableTimeDto, AvailableTime.class));
-            }
-            // AvailableTime 엔티티를 AvailableDay에 설정
-            availableDays.get(availableDays.size() - 1).setAvailableTimes(availableTimes);
-        }
-        doctor.setAvailableDays(availableDays);
-
         return doctor;
     }
 

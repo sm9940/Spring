@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout1}">
 <head>
-    <title>의료진 등록</title>
+    <title>의료진 수정</title>
     <style>
         .fieldError {
             color: #bd2130;
@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-md-12 mb-0">
                     <a href="/">Home</a> <span class="mx-2 mb-0">/</span>
-                    <strong class="text-black">의료진 등록</strong>
+                    <strong class="text-black">의료진 수정</strong>
                 </div>
             </div>
         </div>
@@ -25,10 +25,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="h3 mb-3 text-black">의료진 등록</h2>
+                    <h2 class="h3 mb-3 text-black">의료진 수정</h2>
                     <div class="p-3 p-lg-5 border">
-                        <form role="form" action="/admin/doctor/new" method="post" enctype="multipart/form-data" th:object="${doctorFormDto}" name="doctorForm">
-                            <input type="hidden" />
+                        <form role="form" th:action="@{'/admin/doctor/'+${doctorFormDto.id}}" method="post" enctype="multipart/form-data" th:object="${doctorFormDto}" name="doctorForm">
+                            <input type="hidden" th:field="*{id}" />
 
                             <div class="form-group row">
                                 <div class="col-md-12">
@@ -60,16 +60,19 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row" th:each="num: ${#numbers.sequence(1,5)}">
+                            <div class="form-group row" th:if="${not #lists.isEmpty(doctorFormDto.doctorImgDtoList)}"
+                                 th:each="doctorImgDto, status: ${doctorFormDto.doctorImgDtoList}">
                                 <div class="col-md-12">
-                                    <label for="doctorImgFile" class="form-label"></label>
-                                    <input class="form-control" type="file" id="doctorImgFile" name="doctorImgFile" />
+                                    <label for="doctorImgFile"  class="form-label"
+                                           th:text="${not #strings.isEmpty(doctorImgDto.oriImgName)} ? ${doctorImgDto.oriImgName} : '의료진 이미지' + ${status.index+1}"></label>
+                                    <input type="hidden" name="doctorImgids" th:value="${doctorImgDto.id}"/>
+                                    <input class="form-control" type="file" id="doctorImgFile" name="doctorImgFile"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-md-12 d-flex justify-content-center">
-                                    <button type="button" class="btn btn-primary mb-3" style="width: 150px" onclick="beforeSubmit()">의료진 등록</button>
+                                    <button type="button" class="btn btn-primary mb-3" style="width: 150px" onclick="beforeSubmit()">의료진 수정</button>
                                 </div>
                             </div>
 
@@ -82,46 +85,45 @@
     </div>
 </div>
 <th:block layout:fragment="script">
-<script th:inline="javascript">
-    var errorMessage = [[${errorMessage}]];
+    <script th:inline="javascript">
+        var errorMessage = [[${errorMessage}]];
 
-    if(errorMessage != null) alert(errorMessage);
+        if(errorMessage != null) alert(errorMessage);
 
- var selectedStartTime = '';
- var selectedEndTime = '';
+     var selectedStartTime = '';
+     var selectedEndTime = '';
 
- function beforeSubmit() {
-     const f = document.doctorForm;
-     alert("선택된 시작 시간: " + selectedStartTime + "\n선택된 종료 시간: " + selectedEndTime);
-     f.submit();
- }
+     function beforeSubmit() {
+         const f = document.doctorForm;
+         f.submit();
+     }
 
- function createSelectOptions(select) {
-     for (var hour = 8; hour < 18; hour++) {
-         for (var minute = 0; minute < 60; minute += 30) {
-             var option = document.createElement("option");
-             var timeString = (hour < 10 ? "0" + hour : hour) + ":" + (minute === 0 ? "00" : minute);
-             option.text = timeString;
-             option.value = timeString;
-             select.appendChild(option);
+     function createSelectOptions(select) {
+         for (var hour = 8; hour < 18; hour++) {
+             for (var minute = 0; minute < 60; minute += 30) {
+                 var option = document.createElement("option");
+                 var timeString = (hour < 10 ? "0" + hour : hour) + ":" + (minute === 0 ? "00" : minute);
+                 option.text = timeString;
+                 option.value = timeString;
+                 select.appendChild(option);
+             }
          }
      }
- }
 
- var startTimeSelect = document.getElementById("startTime");
- var endTimeSelect = document.getElementById("endTime");
+     var startTimeSelect = document.getElementById("startTime");
+     var endTimeSelect = document.getElementById("endTime");
 
- createSelectOptions(startTimeSelect);
- createSelectOptions(endTimeSelect);
+     createSelectOptions(startTimeSelect);
+     createSelectOptions(endTimeSelect);
 
- startTimeSelect.addEventListener("change", function() {
-     selectedStartTime = this.value;
- });
+     startTimeSelect.addEventListener("change", function() {
+         selectedStartTime = this.value;
+     });
 
- endTimeSelect.addEventListener("change", function() {
-     selectedEndTime = this.value;
- });
-</script>
+     endTimeSelect.addEventListener("change", function() {
+         selectedEndTime = this.value;
+     });
+    </script>
 </th:block>
 </body>
 </html>

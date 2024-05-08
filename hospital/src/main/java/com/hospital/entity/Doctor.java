@@ -1,6 +1,7 @@
 package com.hospital.entity;
 
 import com.hospital.constant.Major;
+import com.hospital.dto.DoctorFormDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,12 @@ public class Doctor extends BaseEntity{
     @OneToMany(mappedBy = "doctor",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<AvailableDay> availableDays =new ArrayList<>();
 
+    public  void updateDoctor(DoctorFormDto DoctorFormDto){
+        this.doctorNm = DoctorFormDto.getDoctorNm();
+        this.doctorDetail = DoctorFormDto.getDoctorDetail();
+        this.major= DoctorFormDto.getMajor();
+    }
+    
     public void addAvailableDay(AvailableDay availableDay){
         availableDays.add(availableDay);
         availableDay.setDoctor(this);

@@ -17,7 +17,7 @@
     <div class="bg-light py-3">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 mb-0"><a href="/">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">의료진관리</strong></div>
+                <div class="col-md-12 mb-0"><a href="/">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">교수관리</strong></div>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="h3 mb-3 text-black">상품관리</h2>
+                    <h2 class="h3 mb-3 text-black">교수관리</h2>
                     <form th:action = "@{'/admin/doctors/' + ${doctors.number}}" method="get" th:object="${doctors}">
                         <table class="table table-responsive-md">
                             <thead>
@@ -35,17 +35,17 @@
                                 <th scope="col">교수명</th>
                                 <th scope="col">전공</th>
                                 <th scope="col">등록자</th>
-                                <th scope="col">입사일</th>
+                                <th scope="col">등록일</th>
                             </tr>
                             </thead>
                             <!-- 조회된 데이터를 출력한다. -->
                             <tbody>
                             <tr th:each="doctor, status: ${doctors.getContent()}">
                                 <th th:text="${doctor.id}" scope="row"></th>
-                                <td><a th:href="'/admin/doctors/'+ ${doctor.id}" th:text="${doctor.doctorNm}"></a></td>
+                                <td><a th:href="'/admin/doctor/'+ ${doctor.id}" th:text="${doctor.doctorNm}"></a></td>
                                 <td th:text="${doctor.major}"></td>
                                 <td th:text="${doctor.createdBy}"></td>
-                                <td th:text="${doctor.regTime}"></td>
+                                <td th:text="${doctor.regDate}"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -86,10 +86,10 @@
                             </ul>
                         </nav>
 
-                        <div class="row" th:object="${doctorSearchDto}" style="height: 40px">
+                        <div class="row" th:object="${doctorSearchDto}" style="height: 40px; margin-bottom: 30px">
                             <div class="col-lg-2"></div>
                             <div class="col-lg-5" style="display: flex">
-                                <!-- 상품 등록일 -->
+                                <!-- 교수 등록일 -->
                                 <select class="form-control" th:field="*{searchDateType}">
                                     <option value="all">전체기간</option>
                                     <option value="1d">1일</option>
@@ -97,22 +97,25 @@
                                     <option value="1m">1개월</option>
                                     <option value="6m">6개월</option>
                                 </select>
-                                <!-- 상품판매 상태 -->
-                                <select class="form-control" th:field="*{searchSellStatus}">
-                                    <option value="">판매상태(전체)</option>
-                                    <option value="SELL">판매</option>
-                                    <option value="SOLD_OUT">품절</option>
+                                <!-- 교수판매 상태 -->
+                                <select class="form-control" th:field="*{searchMajor}">
+                                    <option value="">(전체)</option>
+                                    <option value="NEUROLOGY">신경외과</option>
+                                    <option value="SURGICAL">외과</option>
+                                    <option value="OPHTALMOLOGY">안과</option>
+                                    <option value="DENTAL">치과</option>
+                                    <option value="CARDIOLOGY">내과</option>
                                 </select>
-                                <!-- 상품명, 등록자 선택 -->
+                                <!-- 교수명, 등록자 선택 -->
                                 <select class="form-control" th:field="*{searchBy}">
-                                    <option value="doctorNm">상품명</option>
-                                    <option value="createdBy">등록자</option>
+                                    <option value="doctorNm">교수명</option>
+                                    
                                 </select>
                             </div>
                             <div class="col-lg-3">
                                 <div style="display: flex">
                                     <input type="text" class="form-control" placeholder="검색어 입력" th:field="*{searchQuery}" />
-                                    <button id="searchBtn" type="submit" class="btn btn-primary mb-3">검색</button>
+                                    <button id="searchBtn" type="submit" class="btn btn-primary mb-3" style="margin-left:20px;width:100px;">검색</button>
                                 </div>
                             </div>
                             <div class="col-lg-2"></div>
@@ -132,12 +135,12 @@
         });
         function page(page){
             var searchDateType =$("#searchDateType").val();
-            var searchSellStatus = $("#searchSellStatus").val();
+            var searchMajor = $("#searchMajor").val();
             var searchBy = $("#searchBy").val();
             var searchQuery =$("#searchQuery").val();
             location.href = "/admin/doctors/"+page
                                         +"?searchDateType="+searchDateType
-                                        +"&searchSellStatus=" + searchSellStatus
+                                        +"&searchMajor=" + searchMajor
                                         +"&searchBy="+ searchBy
                                         +"&searchQuery="+searchQuery;
         }

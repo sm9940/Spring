@@ -4,22 +4,22 @@
 <div class="site-navbar bg-white py-2" th:fragment="header">
     <nav class="navbar py-4 navbar-expand-lg ftco_navbar navbar-light bg-light flex-row">
         <div class="container">
-            <div class="row no-gutters d-flex align-items-start align-items-center px-3 px-md-0">
-                <div class="col-lg-2 pr-4 align-items-center">
+            <div class="row no-gutters d-flex align-doctors-start align-doctors-center px-3 px-md-0">
+                <div class="col-lg-2 pr-4 align-doctors-center">
                     <a class="navbar-brand" href="/">중앙대<span>병원</span></a>
                 </div>
                 <div class="col-lg-10 d-none d-md-block">
                     <div class="row d-flex">
-                        <div class="col-md-4 pr-4 d-flex topper align-items-center">
-                            <div class="icon bg-white mr-2 d-flex justify-content-center align-items-center"><span class="icon-map"></span></div>
+                        <div class="col-md-4 pr-4 d-flex topper align-doctors-center">
+                            <div class="icon bg-white mr-2 d-flex justify-content-center align-doctors-center"><span class="icon-map"></span></div>
                             <span class="text">경기도 광명시 덕안로 110 (일직동 501) </span>
                         </div>
-                        <div class="col-md pr-4 d-flex topper align-items-center">
-                            <div class="icon bg-white mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
+                        <div class="col-md pr-4 d-flex topper align-doctors-center">
+                            <div class="icon bg-white mr-2 d-flex justify-content-center align-doctors-center"><span class="icon-paper-plane"></span></div>
                             <span class="text">Email: chunganguniversity@email.com</span>
                         </div>
-                        <div class="col-md pr-4 d-flex topper align-items-center">
-                            <div class="icon bg-white mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
+                        <div class="col-md pr-4 d-flex topper align-doctors-center">
+                            <div class="icon bg-white mr-2 d-flex justify-content-center align-doctors-center"><span class="icon-phone2"></span></div>
                             <span class="text">1811-7800</span>
                         </div>
                     </div>
@@ -40,10 +40,10 @@
                     </ul>
                 </li>
 
-                <li><a href="/item/shop">의료진</a></li>
+                <li><a href="/doctors">의료진</a></li>
 
                 <!-- 로그인 한 경우-->
-                <li><a href="/orders"sec:authorize="isAuthenticated()">마이페이지</a></li>
+                <li><a href="/reserves"sec:authorize="isAuthenticated()">마이페이지</a></li>
                 <!-- 로그인 하지 않은경우-->
                 <li><a href="/members/login" sec:authorize="isAnonymous()">로그인</a></li>
                 <li><a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
