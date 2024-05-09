@@ -29,6 +29,8 @@ public class QDoctor extends EntityPathBase<Doctor> {
 
     public final StringPath doctorDetail = createString("doctorDetail");
 
+    public final ListPath<DoctorImg, QDoctorImg> doctorImgs = this.<DoctorImg, QDoctorImg>createList("doctorImgs", DoctorImg.class, QDoctorImg.class, PathInits.DIRECT2);
+
     public final StringPath doctorNm = createString("doctorNm");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);

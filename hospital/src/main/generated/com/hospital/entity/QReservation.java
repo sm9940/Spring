@@ -28,11 +28,11 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public final QMember member;
 
-    public final DatePath<java.time.LocalDate> rDate = createDate("rDate", java.time.LocalDate.class);
+    public final StringPath rDate = createString("rDate");
 
     public final EnumPath<com.hospital.constant.RStatus> rStatus = createEnum("rStatus", com.hospital.constant.RStatus.class);
 
-    public final TimePath<java.time.LocalTime> rTime = createTime("rTime", java.time.LocalTime.class);
+    public final StringPath rTime = createString("rTime");
 
     public QReservation(String variable) {
         this(Reservation.class, forVariable(variable), INITS);

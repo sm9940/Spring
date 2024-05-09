@@ -11,15 +11,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,7 +86,7 @@ public class DoctorController {
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("errorMessage",
-                    "상품정보를 가져오는 도중 에러가 발생했습니다.");
+                    "의료진 정보를 가져오는 도중 에러가 발생했습니다.");
 
             //에러발생시 비어있는 객체를 넘겨준다.
             model.addAttribute("doctorFormDto", new DoctorFormDto());
@@ -132,5 +132,10 @@ public class DoctorController {
         DoctorFormDto doctorFormDto=doctorService.getDoctorDtl(doctorId);
         model.addAttribute("doctor",doctorFormDto);
         return "doctor/doctorDtl";
+    }
+    @DeleteMapping("/admin/doctor/{doctorId}/delete")
+    public @ResponseBody ResponseEntity deleteDoctor(@PathVariable("doctorId") Long doctorId, Principal principal){
+        doctorService.deleteDoctor(doctorId);
+        return new ResponseEntity<Long>(doctorId, HttpStatus.OK);
     }
 }

@@ -31,21 +31,15 @@ public class Doctor extends BaseEntity{
     @OneToMany(mappedBy = "doctor",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<AvailableDay> availableDays =new ArrayList<>();
 
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DoctorImg> doctorImgs = new ArrayList<>();
     public  void updateDoctor(DoctorFormDto DoctorFormDto){
         this.doctorNm = DoctorFormDto.getDoctorNm();
         this.doctorDetail = DoctorFormDto.getDoctorDetail();
         this.major= DoctorFormDto.getMajor();
     }
-    
-    public void addAvailableDay(AvailableDay availableDay){
-        availableDays.add(availableDay);
-        availableDay.setDoctor(this);
-    }
 
-    public void removeAvailableDay(AvailableDay availableDay){
-        availableDays.remove(availableDay);
-        availableDay.setDoctor(null);
-    }
+
 
 
 }

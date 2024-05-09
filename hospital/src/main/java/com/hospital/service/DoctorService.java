@@ -102,4 +102,11 @@ public class DoctorService {
         Page<MainDoctorDto> mainDoctorPage = doctorRepository.getMainDoctorPage(doctorSearchDto,pageable);
         return mainDoctorPage;
     }
+
+    public void deleteDoctor(Long doctorId){
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(EntityNotFoundException::new);
+
+        // Cascade 설정을 통해 doctor의 자식 엔티티에 해당하는 doctorItem도 같이 삭제
+        doctorRepository.delete(doctor); // delete
+    }
 }

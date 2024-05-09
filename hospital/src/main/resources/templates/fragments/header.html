@@ -43,13 +43,13 @@
                 <li><a href="/doctors">의료진</a></li>
 
                 <!-- 로그인 한 경우-->
-                <li><a href="/reserves"sec:authorize="isAuthenticated()">마이페이지</a></li>
+                <li><a href="/members/mypage"sec:authorize="isAuthenticated()">마이페이지</a></li>
                 <!-- 로그인 하지 않은경우-->
                 <li><a href="/members/login" sec:authorize="isAnonymous()">로그인</a></li>
                 <li><a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
                 <li sec:authorize="isAuthenticated()"><span sec:authentication="principal.name"></span> 님 환영합니다</li>
                 <li class="site-navigation text-right " role="navigation" style="margin-left:4rem">
-                    <p class="button-custom order-lg-last mb-0"><a href="appointment.html" class="btn btn-secondary py-2 px-3">간 편 예 약</a></p>
+                    <p class="button-custom order-lg-last mb-0"><a href="/reserve" class="btn btn-secondary py-2 px-3">간 편 예 약</a></p>
                 </li>
             </ul>
         </nav>

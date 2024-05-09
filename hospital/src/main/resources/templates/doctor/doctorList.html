@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout1}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{layouts/layout1}">
+
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
 <th:block layout:fragment="css">
     <style>
         select {
@@ -46,6 +51,10 @@
                                 <td th:text="${doctor.major}"></td>
                                 <td th:text="${doctor.createdBy}"></td>
                                 <td th:text="${doctor.regDate}"></td>
+                                <td>
+                                    <input type="hidden" th:value="${doctor.id}" th:id="'doctorId_'+${doctor.id}">
+                                    <a th:onclick="@{'deleteDoctor('+${doctor.id}+')'}">삭제</a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -133,17 +142,48 @@
                 e.preventDefault(); //submit 방지
                 page(0); //검색 이후엔 검색한 페이지의 시작페이지 부터 보여준다.
         });
-        function page(page){
-            var searchDateType =$("#searchDateType").val();
-            var searchMajor = $("#searchMajor").val();
-            var searchBy = $("#searchBy").val();
-            var searchQuery =$("#searchQuery").val();
-            location.href = "/admin/doctors/"+page
-                                        +"?searchDateType="+searchDateType
-                                        +"&searchMajor=" + searchMajor
-                                        +"&searchBy="+ searchBy
-                                        +"&searchQuery="+searchQuery;
+        function deleteDoctor(doctorId) {
+        console.log(doctorId)
+    // doctorId가 유효한 숫자인지 확인
+    if (isNaN(doctorId)) {
+        alert("유효하지 않은 의사 ID입니다.");
+        return;
+    }
+
+    // 삭제 확인 다이얼로그 표시
+    const deleteConf = confirm("의료진 정보를 삭제하시겠습니까?");
+    if (!deleteConf) return; // 취소 버튼 선택시
+
+    // CSRF 토큰 가져오기
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    // DELETE 요청 보내기
+    $.ajax({
+        url: "/admin/doctor/" + doctorId + "/delete",
+        type: "DELETE",
+        contentType: "application/json",
+        beforeSend: function(xhr) {
+            // 헤더에 CSRF 토큰 설정
+            xhr.setRequestHeader('X-CSRF-TOKEN', token);
+        },
+        dataType: "json",
+        cache: false,
+        success: function(result, status) {
+            // 성공 시 페이지 새로고침
+            location.reload();
+        },
+        error: function(jqXHR, status, error) {
+            // 오류 처리
+            if (jqXHR.status == '401') {
+                alert('로그인 후 이용해주세요.');
+                location.href = '/members/login';
+            } else {
+                alert(jqXHR.responseText);
+            }
         }
+    });
+}
     </script>
 </th:block>
 </html>

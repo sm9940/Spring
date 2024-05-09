@@ -9,6 +9,7 @@ import lombok.ToString;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table(name = "reservation")
@@ -20,8 +21,8 @@ public class Reservation {
     @Column(name = "r_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate rDate;
-    private LocalTime rTime;
+    private String rDate;
+    private String rTime;
     private RStatus rStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,4 +32,13 @@ public class Reservation {
     @JoinColumn(name="member_id")
     private Member member;
 
+    public static Reservation createReservation(Member member, Doctor doctor, String rDate, String rTime) {
+        Reservation reservation = new Reservation();
+        reservation.setMember(member);
+        reservation.setDoctor(doctor);
+        reservation.setRDate(rDate);
+        reservation.setRTime(rTime);
+        reservation.setRStatus(RStatus.RESERVATION);
+        return reservation;
+    }
 }

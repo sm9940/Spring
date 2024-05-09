@@ -12,10 +12,13 @@ public class MemberContext extends User {
     //authentication객체에 저장하고 싶은 값을 필드로 지정
     private  final String address;
     private final String name;
+    private final Long id;
 
     public MemberContext(Member member, List<GrantedAuthority>authorities){
         super(member.getEmail(),member.getPassword(),authorities);
         this.address = member.getAddress();
         this.name = member.getName();
+        this.id =member.getId();
     }
+
 }

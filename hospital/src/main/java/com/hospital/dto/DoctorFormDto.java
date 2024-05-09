@@ -27,8 +27,8 @@ public class DoctorFormDto {
     private Major major;
     private Day day;
 
-    private List<AvailableDayDto> availableDayDtoList = new ArrayList<>();
-    private List<AvailableTimeDto> availableTimeDtoList = new ArrayList<>();
+//    private List<AvailableDayDto> availableDayDtoList = new ArrayList<>();
+//    private List<AvailableTimeDto> availableTimeDtoList = new ArrayList<>();
     private List<DoctorImgDto> doctorImgDtoList = new ArrayList<>();
     private List<Long> doctorImgids = new ArrayList<>();
 
