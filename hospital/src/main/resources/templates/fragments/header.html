@@ -43,7 +43,7 @@
                 <li><a href="/doctors">의료진</a></li>
 
                 <!-- 로그인 한 경우-->
-                <li><a href="/members/mypage"sec:authorize="isAuthenticated()">마이페이지</a></li>
+                <li><a href="/reserves"sec:authorize="isAuthenticated()">마이페이지</a></li>
                 <!-- 로그인 하지 않은경우-->
                 <li><a href="/members/login" sec:authorize="isAnonymous()">로그인</a></li>
                 <li><a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
