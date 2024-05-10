@@ -16,7 +16,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.authorizeHttpRequests(authorize -> authorize
+        httpSecurity.authorizeRequests(authorize -> authorize
                         //모든 사요자가 로그인(인증) 없이 접근할 수 있도록 설정
                         .requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/fonts/**").permitAll()
                         .requestMatchers("/", "/members/**","/doctors/**","/reserve/**").permitAll()

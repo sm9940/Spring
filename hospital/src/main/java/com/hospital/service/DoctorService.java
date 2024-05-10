@@ -1,20 +1,22 @@
 package com.hospital.service;
 
+import com.hospital.config.MemberContext;
 import com.hospital.dto.*;
-import com.hospital.entity.AvailableDay;
-import com.hospital.entity.AvailableTime;
-import com.hospital.entity.Doctor;
-import com.hospital.entity.DoctorImg;
+import com.hospital.entity.*;
 import com.hospital.repository.DoctorImgRepository;
 import com.hospital.repository.DoctorRepository;
+import com.hospital.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final DoctorImgService doctorImgService;
     private final DoctorImgRepository doctorImgRepository;
+    private final MemberRepository memberRepository;
 
     public Long saveDoctor(DoctorFormDto doctorFormDto, List<MultipartFile> doctorImgFileList) throws Exception {
         Doctor doctor = doctorFormDto.createDoctor();
@@ -49,7 +52,16 @@ public class DoctorService {
     }
     
     @Transactional(readOnly = true) //트랜잭션 읽기 전용(변경감지 수행 X) -> 성능향상
-    public DoctorFormDto getDoctorDtl(Long DoctorId){
+    public DoctorFormDto getDoctorDtl(Long DoctorId, Principal principal){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // 인증 정보에서 MemberContext 가져오기
+        MemberContext memberContext = (MemberContext) authentication.getPrincipal();
+
+        // MemberContext에서 memberId 가져오기
+        Long memberId = memberContext.getId();
+        Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
+
         //1. Doctor_img 테이블의 이미지를 가져온다.
         List<DoctorImg> DoctorImgList = doctorImgRepository.findByDoctorIdOrderByIdAsc(DoctorId);
 

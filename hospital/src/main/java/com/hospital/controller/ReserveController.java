@@ -22,15 +22,16 @@ import java.security.Principal;
 public class ReserveController {
     private final ReservationService reservationService;
 
-@PostMapping(value = "/reserve")
-public  @ResponseBody ResponseEntity addReserve(@RequestBody ReservationDto reservationDto, Principal principal){
-    String memberId = principal.getName();
-    try {
-        Reservation reservation = reservationService.createReservation(reservationDto);
-        return ResponseEntity.ok(reservation);
-    } catch (RuntimeException e) {
-        e.printStackTrace();
-        return ResponseEntity.badRequest().body(e.getMessage());
+    @PostMapping(value = "/reserve")
+    public String addReserve(@Valid ReservationDto reservationDto, Model model) {
+        try {
+            reservationService.createReservation(reservationDto);
+
+            return "redirect:/";
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            model.addAttribute("errorMessage", e.getMessage());
+            return "doctor/doctorDtl";
+        }
     }
-}
     }

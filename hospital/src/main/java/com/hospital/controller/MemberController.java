@@ -20,11 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class MemberController {
    private final PasswordEncoder passwordEncoder;
     private final MemberService memberService;
-    //문의하기
-    @GetMapping(value = "/members/qa")
-    public String qa(){
-        return "member/qa";
-    }
+
     //로그인 화면
     @GetMapping(value = "/members/login")
     public String loginMember (){ return "member/memberLoginForm";}

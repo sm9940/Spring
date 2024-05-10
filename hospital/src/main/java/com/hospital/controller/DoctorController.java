@@ -3,9 +3,14 @@ package com.hospital.controller;
 import com.hospital.dto.DoctorFormDto;
 import com.hospital.dto.DoctorSearchDto;
 import com.hospital.dto.MainDoctorDto;
+import com.hospital.dto.ReservationDto;
 import com.hospital.entity.AvailableDay;
 import com.hospital.entity.Doctor;
+import com.hospital.entity.Member;
+import com.hospital.repository.MemberRepository;
 import com.hospital.service.DoctorService;
+import com.hospital.service.MemberService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,9 +32,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DoctorController {
     private final DoctorService doctorService;
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
     @GetMapping(value = "/admin/doctor/new")
     public String DoctorForm(Model model){
         model.addAttribute("doctorFormDto",new DoctorFormDto());
+
         return "doctor/doctorForm";
     }
     @PostMapping(value = "/admin/doctor/new")
@@ -79,10 +87,11 @@ public class DoctorController {
         return "doctor/doctors";
     }
     @GetMapping(value = "/admin/doctor/{doctorId}")
-    public String DoctorDtl(@PathVariable("doctorId") Long doctorId, Model model) {
+    public String DoctorDtl(@PathVariable("doctorId") Long doctorId, Model model,Principal principal) {
         try {
-            DoctorFormDto doctorFormDto = doctorService.getDoctorDtl(doctorId);
+            DoctorFormDto doctorFormDto = doctorService.getDoctorDtl(doctorId,principal);
             model.addAttribute("doctorFormDto", doctorFormDto);
+
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("errorMessage",
@@ -98,11 +107,11 @@ public class DoctorController {
     @PostMapping(value = "/admin/doctor/{doctorId}")
     public String DoctorUpdate(@Valid DoctorFormDto doctorFormDto, Model model, BindingResult bindingResult,
                              @RequestParam("doctorImgFile") List<MultipartFile> doctorImgFileList,
-                             @PathVariable("doctorId") Long doctorId) {
+                             @PathVariable("doctorId") Long doctorId,Principal principal) {
 
         if(bindingResult.hasErrors()) return "doctor/doctorForm"; //유효성 체크에서 걸리면
 
-        DoctorFormDto getDoctorFormDto = doctorService.getDoctorDtl(doctorId);
+        DoctorFormDto getDoctorFormDto = doctorService.getDoctorDtl(doctorId,principal);
 
         //상품등록 전에 첫번째 이미지가 있는지 없는지 검사(첫번째 이미지는 필수 입력값)
         //DoctorFormDto.getId() ==null => 이미지 외에 다른 내용만 수정햇을때 if문에 걸리는 경우를 방지
@@ -128,9 +137,14 @@ public class DoctorController {
     }
     
     @GetMapping(value = "/doctors/{doctorId}")
-    public String doctorDtl(Model model, @PathVariable("doctorId") Long doctorId){
-        DoctorFormDto doctorFormDto=doctorService.getDoctorDtl(doctorId);
-        model.addAttribute("doctor",doctorFormDto);
+    public String doctorDtl(Model model, @PathVariable("doctorId") Long doctorId,Principal principal){
+
+        DoctorFormDto doctorFormDto = doctorService.getDoctorDtl(doctorId,principal);
+
+        // 모델에 doctor와 memberId 추가
+        model.addAttribute("doctor", doctorFormDto);
+        model.addAttribute("reservationDto",new ReservationDto());
+
         return "doctor/doctorDtl";
     }
     @DeleteMapping("/admin/doctor/{doctorId}/delete")

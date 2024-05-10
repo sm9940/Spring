@@ -249,7 +249,7 @@
 
 
   $('.appointment_date').datepicker({
-	  'format': 'm/d/yyyy',
+	  'format': 'yyyy/m/d',
 	  'autoclose': true
 	});
 

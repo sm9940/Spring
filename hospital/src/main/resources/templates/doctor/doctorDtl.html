@@ -37,6 +37,7 @@
         <div class="container">
             <div class="row no-gutters">
                 <input type="hidden" id="doctorId" th:value="${doctor.id}" />
+                <input type="hidden" id="memberId" th:value="${memberId}" />
                 <div class="col-md-5 p-md-5 img img-2 mt-5 mt-md-0" th:style="'background-image: url('+${doctor.doctorImgDtoList[0].imgUrl}+')'">
                 </div>
                 <div class="col-md-7 wrap-about py-4 py-md-5 ftco-animate">
@@ -51,47 +52,53 @@
                         <p th:text="'진료내용: '+${doctor.doctorDetail}">
                         </p>
                     </div>
-                    <div class="d-md-flex justify-content-center" sec:authorize="isAuthenticated()">
-                        <div class="form-group">
-                            <div class="input-wrap">
-                                <div class="icon">
-                                    <span class="ion-md-calendar"></span>
+                    <form id="reservationForm" action="/reserve" method="post" th:object="${reservationDto}" >
+                        <input type="hidden" name="doctorId" th:value="${doctor.id}" />
+                        <input type="hidden" name="memberId" th:value="${memberId}" />
+
+                        <div class="d-md-flex justify-content-center" sec:authorize="isAuthenticated()">
+                            <div class="form-group">
+                                <div class="input-wrap">
+                                    <div class="icon">
+                                        <span class="ion-md-calendar"></span>
+                                    </div>
+                                    <input
+                                            type="text"
+                                            class="form-control appointment_date"
+                                            name="rDate"
+                                            id="rDate"
+                                            th:value="${rDate}"
+                                            placeholder="Date"
+                                    />
                                 </div>
+                            </div>
+                            <div class="form-group ml-md-4">
+                                <div class="input-wrap">
+                                    <div class="icon">
+                                        <span class="ion-ios-clock"></span>
+                                    </div>
+                                    <input
+                                            type="text"
+                                            class="form-control appointment_time"
+                                            name="rTime"
+                                            id="rTime"
+                                            th:value="${rTime}"
+                                            placeholder="Time"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-md-flex justify-content-center" sec:authorize="isAuthenticated()">
+                            <div class="form-group ml-md-4">
                                 <input
-                                        type="text"
-                                        class="form-control appointment_date"
-                                        name="rDate"
-                                        id="rDate"
-                                        placeholder="Date"
+                                        type="submit"
+                                        value="간편 예약"
+                                        class="btn btn-secondary py-3 px-4"
                                 />
                             </div>
                         </div>
-                        <div class="form-group ml-md-4" sec:authorize="isAuthenticated()">
-                            <div class="input-wrap">
-                                <div class="icon">
-                                    <span class="ion-ios-clock"></span>
-                                </div>
-                                <input
-                                        type="text"
-                                        class="form-control appointment_time"
-                                        name="rTime"
-                                        id="rTime"
-                                        placeholder="Time"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-md-flex justify-content-center" sec:authorize="isAuthenticated()">
-                        <div class="form-group ml-md-4">
-                            <!-- 예약 버튼에 onclick 이벤트 추가 -->
-                            <input
-                                    type="submit"
-                                    value="간편 예약"
-                                    class="btn btn-secondary py-3 px-4"
-                                    onclick="reserve()"
-                            />
-                        </div>
-                    </div>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    </form>
                 </div>
             </div>
         </div>
@@ -101,39 +108,9 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        function reserve(){
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
 
-            var paramData ={
-                doctorId :$("#doctorId").val(),
-                rDate: $("#rDate").val(), // 쉼표 추가
-                rTime: $("#rTime").val()
-            }
-            var param = JSON.stringify(paramData);
-            $.ajax({
-                url : "/reserve",
-                type : "post",
-                contentType : "application/json",
-                data : param,
-                beforeSend : function(xhr) {
-                    xhr.setRequestHeader(header, token);
-                },
-                dataType : "json",
-                cache : false,
-                success : function(result, status) {
-                    alert("예약이 완료되었습니다."); // 성공 메시지 수정
-                },
-                error : function(jqXHR, status, error) {
-                    if(jqXHR.status== '401'){
-                        alert('로그인 후 이용해주세요');
-                        location.href='/members/login';
-                    } else{
-                        alert(jqXHR.responseText);
-                    }
-                }
-            });
-        }
+
+
     </script>
 </th:block>
 </html>

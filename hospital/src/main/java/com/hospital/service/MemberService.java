@@ -51,6 +51,8 @@ public class MemberService implements UserDetailsService {
         }
         return new MemberContext(member,authorities);
     }
+
+
 //    @Override
 //    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 //        //해당 email 계정을 가진 사용자가 있는지 확인
