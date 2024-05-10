@@ -43,33 +43,24 @@
                     <h2 class="h3 mb-3 text-black">예약 내역</h2>
                     <div th:if="${reserves != null}" th:each = "reserve: ${reserves.getContent()}">
                         <div class="d-flex mb-3 align-self-center">
-                            <th:block th:if="${#strings.equals(reserve.rStatus, 'RESERVATION')}">
-                                <h4 th:text="${reserve.rDate} " style="font-size: 18px"></h4>
-                                &nbsp&nbsp
-                                <h3 th:text="${reserve.rTime} +' 예약'" style="font-size: 18px"></h3>
-                            </th:block>
-
-
-                            <th:block th:unless="${#strings.equals(reserve.rStatus, 'RESERVATION')}">
-                                <h4   style="font-size: 18px">주문 취소완료</h4>
-                            </th:block>
                         </div>
                         <div class="card d-flex flex-row">
                             <div class="d-flex mb-3" style="width: 90%">
                                 <div class="repImgDiv">
-
+                                    <img th:src="${reserve.imgUrl}"
+                                         th:alt="${reserve.doctorNm}" class="rounded repImg" />
                                 </div>
                                 <div class="align-self-center w-75">
-                                    <span th:text="${reserve.doctorNm}" class="font-weight-bold" style="font-size: 18px; color: black"></span>
+                                    <span th:text="${reserve.doctorNm}+' 교수'" class="font-weight-bold" style="font-size: 18px; color: black"></span>
                                     <div  class="fs18 font-weight-light">
                                         <span th:text="${reserve.rDate}" ></span>
                                         <span th:text="${reserve.rTime}"></span>
                                     </div>
                                 </div>
                             </div>
-                            <div>
+                            <div class="align-self-center">
                                 <th:block th:if="${#strings.equals(reserve.RStatus, 'RESERVATION')}">
-                                    <button type="button" class="btn btn-outline-secondary"th:value="${reserve.rId}" onclick="deleteReserve(this.value)" style="width:7rem;">예약취소</button>
+                                    <button type="button" class="btn btn-outline-secondary" th:value="${reserve.rId}" onclick="deleteReserve(this.value)" style="width:7rem;">예약취소</button>
                                 </th:block>
                                 <p>
 
