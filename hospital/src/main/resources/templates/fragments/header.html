@@ -48,9 +48,6 @@
                 <li><a href="/members/login" sec:authorize="isAnonymous()">로그인</a></li>
                 <li><a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
                 <li sec:authorize="isAuthenticated()"><span sec:authentication="principal.name"></span> 님 환영합니다</li>
-                <li class="site-navigation text-right " role="navigation" style="margin-left:4rem">
-                    <p class="button-custom order-lg-last mb-0"><a href="/reserve" class="btn btn-secondary py-2 px-3">간 편 예 약</a></p>
-                </li>
             </ul>
         </nav>
 
